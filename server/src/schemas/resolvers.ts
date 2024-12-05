@@ -12,7 +12,6 @@ interface Context {
     data: {
       _id: string;
       username: string;
-      email: string;
     };
     iat: number;
     exp: number;
@@ -22,7 +21,6 @@ interface Context {
 interface AddUserArgs {
 
   username: string;
-  email: string;
   password: string;
 
 }
@@ -71,23 +69,23 @@ export const resolvers = {
 
   },
   Mutation: {
-    login: async (_: any, { email, password }: any) => {
-      const user = await User.findOne({ email });
+    login: async (_: any, { username, password }: any) => {
+      const user = await User.findOne({ username });
       if (!user || !(await user.isCorrectPassword(password))) {
         throw new AuthenticationError('Invalid credentials');
       }
 
     //  const token = jwt.sign({ _id: user._id }, secret, { expiresIn: '2h' });
-      const token = signToken(user.username, user.email, user._id);
+      const token = signToken(user.username, user._id);
       return { token, user };
     },
-    addUser: async (_parent: any, { username, email, password }: AddUserArgs) => {
+    addUser: async (_parent: any, { username, password }: AddUserArgs) => {
       // Create a new user with the provided username, email, and password
 
-      const user = await User.create({ username, email, password });
+      const user = await User.create({ username,, password });
 
       // Sign a token with the user's information
-      const token = signToken(username, email, user._id);
+      const token = signToken(username, user._id);
 
       // Return the token and the user
       return { token, user };
