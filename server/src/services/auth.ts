@@ -6,8 +6,7 @@ dotenv.config();
 
 interface JwtPayload {
   _id: unknown;
-  username: string;
-  email: string,
+  username: string,
 }
 
 export const authenticateToken = ({req}: {req: Request}) => {
@@ -32,8 +31,8 @@ export const authenticateToken = ({req}: {req: Request}) => {
   return req;
 };
 
-export const signToken = (username: string, email: string, _id: unknown) => {
-  const payload = { username, email, _id };
+export const signToken = (username: string, _id: unknown) => {
+  const payload = { username, _id };
   const secretKey = process.env.JWT_SECRET_KEY || '';
 
   return jwt.sign(payload, secretKey, { expiresIn: '1h' });

@@ -6,7 +6,6 @@ import { type BookDocument, bookSchema } from './Book.js';
 
 export interface IUser extends Document {
   username: string;
-  email: string;
   password: string;
   savedBooks: BookDocument[];
   isCorrectPassword(password: string): Promise<boolean>;
@@ -18,12 +17,6 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       unique: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      match: [/.+@.+\..+/, 'Must use a valid email address'],
     },
     password: {
       type: String,
