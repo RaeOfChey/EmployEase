@@ -1,19 +1,21 @@
+export const  searchMuseJobs = async (location: string, industry: string, experience: string) => {
 
+  if(location){
+    
+  }
 
-// make a search to google books api
-// https://www.googleapis.com/books/v1/volumes?q=harry+potter
-// export const searchGoogleBooks = (query: string) => {
-//   return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
-// };
+  if(industry){
 
+  }
 
+  if(experience){
+  }
 
-// export const searchGoogleBooks = (query: string) => {
-//   return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
-// };
+  let data = await fetch(`https://www.themuse.com/api/public/jobs?location=United%20States&page=1`);
 
+  console.log("data")
+  console.log(data)
 
-export const searchMuseJobs = (myInput: string) => {
   return fetch(`https://www.themuse.com/api/public/jobs?location=United%20States&page=1`);
 };
 

@@ -10,7 +10,8 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-import { searchMuseJobs } from '../../../server/src/routes/api/API';
+//import { searchGoogleBooks } from '../../../server/src/routes/api/API';
+import { searchMuseJobs} from '../../../server/src/routes/api/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import type { Book } from '../models/Book';
 import type { GoogleAPIBook } from '../models/GoogleAPIBook';
@@ -21,9 +22,6 @@ import { GET_ME } from '../utils/queries';
 
 
 const SearchBooks = () => {
-
-
-  //const [saveBook] = useMutation(SAVE_BOOK);
 
   const [saveBook] = useMutation(SAVE_BOOK, {
     update(cache, { data: { saveBook } }) {
@@ -44,14 +42,15 @@ const SearchBooks = () => {
       }
     },
   });
-  
-
-
 
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState<Book[]>([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
+  const [location] = useState('United States');
+  const [industry] = useState('IT');
+  const [experience] = useState('Entry Level');
+
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
@@ -66,32 +65,48 @@ const SearchBooks = () => {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!searchInput) {
-      return false;
-    }
-
+    // if (!searchInput) {
+    //   return false;
+    // }
+    //location, industry and experience leve
     try {
-      const response = await searchMuseJobs(searchInput);
+      //const response = await searchGoogleBooks(searchInput);
+      const response = await searchMuseJobs(location, industry, experience);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
-      const { items } = await response.json();
 
-      if (!items) {
-        throw new Error('No books found!');
-      }
 
-      const bookData = items.map((book: GoogleAPIBook) => ({
-        bookId: book.id,
-        authors: book.volumeInfo.authors || ['No author to display'],
-        title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
-        image: book.volumeInfo.imageLinks?.thumbnail || '',
-      }));
+      const { results:items } = await response.json();
 
-      setSearchedBooks(bookData);
+
+      console.log("results:items ")
+      console.log(items)
+      
+
+
+      //const { items } = await response.json();
+      // const data = await response.json();
+
+      // console.log("data: ")
+      // console.log(data)
+
+
+      // if (!items) {
+      //   throw new Error('No books found!');
+      // }
+
+      // const bookData = items.map((book: GoogleAPIBook) => ({
+      //   bookId: book.id,
+      //   authors: book.volumeInfo.authors || ['No author to display'],
+      //   title: book.volumeInfo.title,
+      //   description: book.volumeInfo.description,
+      //   image: book.volumeInfo.imageLinks?.thumbnail || '',
+      // }));
+
+      // setSearchedBooks(bookData);
       setSearchInput('');
     } catch (err) {
       console.error(err);
@@ -109,8 +124,6 @@ const SearchBooks = () => {
       return;
     }
     
-
-
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
