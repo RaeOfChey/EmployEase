@@ -14,6 +14,8 @@
 
 // export default App;
 
+import Footer from './components/Footer';
+
 import {
     createHttpLink,
   } from '@apollo/client';
@@ -41,18 +43,14 @@ const authLink = setContext((_, { headers }) => {
     };
   });
 
-  console.log('authLink:', authLink);
+console.log('authLink:', authLink);
 console.log('httpLink:', httpLink);
-
 
 const client = new ApolloClient({
     link: authLink.concat(httpLink),
     uri: '/graphql', // Ensure this matches your server's GraphQL endpoint
     cache: new InMemoryCache(),
-
 });
-
-
 
 console.log('Apollo Client Initialized:', client);
 
@@ -61,6 +59,7 @@ const App = () => (
         <>
             <Navbar />
             <Outlet />
+            <Footer />
         </>
     </ApolloProvider>
 );

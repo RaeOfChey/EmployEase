@@ -29,7 +29,7 @@ const AppNavbar = () => {
               alt='EmployEase Logo'
               className='navbar-logo'
             />
-            <span className='ms-2'>EmployEase</span>
+            <span className='ms-2 employease-text'>EmployEase</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
