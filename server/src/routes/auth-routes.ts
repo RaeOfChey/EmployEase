@@ -7,19 +7,19 @@ const JWT_SECRET = process.env.JWT_SECRET || 'yourSecretKey';
 const JWT_EXPIRATION = '2h';
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
     // Check if the user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: 'Invalid password' });
     }
 
     // Compare the password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: 'Invalid password' });
     }
 
     // Create a JWT token
@@ -33,7 +33,6 @@ export const login = async (req: Request, res: Response) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email,
       },
     });
   } catch (error) {

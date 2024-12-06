@@ -6,26 +6,28 @@ export const typeDefs = gql`
     }
 
     type Mutation {
-        login(email: String!, password: String!): Auth
-        addUser(username: String!, email: String!, password: String!): Auth
-        saveBook(input: BookInput!): User
-        removeBook(bookId: String!): User
+        login(username: String!, password: String!): Auth
+        addUser(username: String!, password: String!): Auth
+        saveJob(input: jobInput!): User
+        removeJob(jobId: String!): User
     }
 
     type User {
         _id: ID
         username: String
-        email: String
-        bookCount: Int
-        savedBooks: [Book]
+        jobCount: Int
+        savedJobs: [job]
     }
 
-    type Book {
-        bookId: String
-        authors: [String]
-        description: String
-        title: String
-        image: String
+    type Job {
+        jobId: String
+        content: String
+        jobTitle: String
+        datePublished: String
+        refs: refs
+        levels: [levels]
+        locations: [locations]
+        company: company
     }
 
     type Auth {
@@ -33,12 +35,31 @@ export const typeDefs = gql`
         user: User
     }
 
-    input BookInput {
-        bookId: String
-        authors: [String]
-        description: String
-        title: String
-        image: String
+    input refsInput {
+        landingPage: String
+    }
+
+    input levelsInput {
+        name: String
+    }
+
+    input locationsInput {
+        name: String
+    }
+
+    input companyInput {
+        name: String
+    }
+    
+    input jobInput {
+        jobId: String
+        content: String
+        jobTitle: String
+        datePublished: String
+        refs: refsInput
+        levels: [levelsInput]
+        locations: [locationsInput]
+        company: companyInput
     }
 `;
 

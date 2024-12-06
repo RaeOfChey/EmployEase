@@ -9,7 +9,6 @@ interface Context {
     data: {
       _id: string;
       username: string;
-      email: string;
     };
     iat: number;
     exp: number;
@@ -19,19 +18,20 @@ interface Context {
 interface AddUserArgs {
 
   username: string;
-  email: string;
   password: string;
 
 }
 
-interface SaveBookArgs {
+interface SaveJobArgs {
   input: {
-    bookId: string;
-    authors: string[];
-    description: string;
-    title: string;
-    image: string;
-    link: string;
+    jobId: string;
+    content: string;
+    jobTitle: string;
+    datePublished: string;
+    refs: { landingPage: string };
+    levels: { name: string }[];
+    locations: { name: string }[];
+    company: { name: string };
   };
 }
 // interface UserArgs {
@@ -55,7 +55,7 @@ export const resolvers = {
       }
 
       try {
-        const user = await User.findById(context.user.data._id).populate('savedBooks');
+        const user = await User.findById(context.user.data._id).populate('sacedJobs');
         if (!user) {
           throw new Error('User not found');
         }
@@ -68,30 +68,30 @@ export const resolvers = {
 
   },
   Mutation: {
-    login: async (_: any, { email, password }: any) => {
-      const user = await User.findOne({ email });
+    login: async (_: any, { username, password }: any) => {
+      const user = await User.findOne({ username });
       if (!user || !(await user.isCorrectPassword(password))) {
         throw new AuthenticationError('Invalid credentials');
       }
 
     //  const token = jwt.sign({ _id: user._id }, secret, { expiresIn: '2h' });
-      const token = signToken(user.username, user.email, user._id);
+      const token = signToken(user.username, user._id);
       return { token, user };
     },
-    addUser: async (_parent: any, { username, email, password }: AddUserArgs) => {
+    addUser: async (_parent: any, { username, password }: AddUserArgs) => {
       // Create a new user with the provided username, email, and password
 
-      const user = await User.create({ username, email, password });
+      const user = await User.create({ username, password });
 
       // Sign a token with the user's information
-      const token = signToken(username, email, user._id);
+      const token = signToken(username, user._id);
 
       // Return the token and the user
       return { token, user };
 
       // throw new AuthenticationError('Input invalid');
     },
-    saveBook: async (_: any, { input }: { input: SaveBookArgs }, context: Context) => {
+    saveBook: async (_: any, { input }: { input: SaveJobArgs }, context: Context) => {
       // console.log("context: ", context);
 
     
@@ -107,10 +107,10 @@ export const resolvers = {
         const updatedUser = await User.findByIdAndUpdate(
           context.user.data._id,
           {
-            $push: { savedBooks: input }, // Push the full Book object
+            $push: { savedJobs: input }, // Push the full Book object
           },
           { new: true } // Return the updated user
-        ).populate("savedBooks");
+        ).populate("savedJobs");
     
         if (!updatedUser) {
           throw new Error("User update failed or user not found");
@@ -119,14 +119,14 @@ export const resolvers = {
         return updatedUser;
       } catch (err) {
         console.error("Error in saveBook resolver:", err);
-        throw new Error("Failed to save book");
+        throw new Error("Failed to save job");
       }
     },
-    removeBook: async (_: any, { bookId }: any, context: Context) => {
+    removeBook: async (_: any, { jobId }: any, context: Context) => {
       if (context.user) {
         return User.findByIdAndUpdate(
           context.user.data._id,
-          { $pull: { savedBooks: { bookId } } },
+          { $pull: { savedJobs: { jobId } } },
           { new: true }
         );
       }
