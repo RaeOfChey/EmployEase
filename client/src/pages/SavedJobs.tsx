@@ -12,7 +12,7 @@ import type { Book } from '../models/Book';
 import { REMOVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
-
+import SaveJobForm from '../components/SaveJobForm';
 
 const SavedBooks = () => {
 
@@ -71,34 +71,6 @@ const SavedBooks = () => {
               }:`
             : 'You have no saved jobs. Search for jobs and save them to view later here.'}
         </h2>
-        <Row>
-          {userData?.savedBooks?.map((book: Book) => {
-            return (
-              <Col key={book.bookId} md='4'>
-                <Card border='dark'>
-                  {book.image ? (
-                    <Card.Img
-                      src={book.image}
-                      alt={`The cover for ${book.title}`}
-                      variant='top'
-                    />
-                  ) : null}
-                  <Card.Body>
-                    <Card.Title>{book.title}</Card.Title>
-                    <p className='small'>Authors: {book.authors}</p>
-                    <Card.Text>{book.description}</Card.Text>
-                    <Button
-                      className='btn-block btn-danger'
-                      onClick={() => handleDeleteBook(book.bookId)}
-                    >
-                      Delete this Book!
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
       </Container>
     </>
   );
