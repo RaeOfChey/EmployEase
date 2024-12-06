@@ -1,4 +1,3 @@
-
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 
 import { useQuery, useMutation } from '@apollo/client';
@@ -58,9 +57,9 @@ const SavedBooks = () => {
       <div className='text-light bg-dark p-5'>
         <Container>
           {userData?.username ? (
-            <h1>Viewing {userData?.username}'s saved books!</h1>
+            <h1>{userData?.username}, here are your saved jobs</h1>
           ) : (
-            <h1>Viewing saved books!</h1>
+            <h1>Saved jobs</h1>
           )}
         </Container>
       </div>
@@ -70,7 +69,7 @@ const SavedBooks = () => {
             ? `Viewing ${userData?.savedBooks?.length} saved ${
                 userData?.savedBooks?.length === 1 ? 'book' : 'books'
               }:`
-            : 'You have no saved books!'}
+            : 'You have no saved jobs. Search for jobs and save them to view later here.'}
         </h2>
         <Row>
           {userData?.savedBooks?.map((book: Book) => {
