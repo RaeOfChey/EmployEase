@@ -58,7 +58,7 @@ export const resolvers = {
       }
 
       try {
-        const user = await User.findById(context.user.data._id).populate('sacedJobs');
+        const user = await User.findById(context.user.data._id).populate('savedJobs');
         if (!user) {
           throw new Error('User not found');
         }
