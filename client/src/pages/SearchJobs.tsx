@@ -19,9 +19,11 @@ import { SAVE_BOOK } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 
+import SaveJobForm from '../components/SaveJobForm';
+
 
 const SearchBooks = () => {
-
+  const [showJobForm, setShowJobForm] = useState(false);
 
   //const [saveBook] = useMutation(SAVE_BOOK);
 
@@ -131,7 +133,7 @@ const SearchBooks = () => {
 
   return (
     <>
-      <div className="text-light bg-dark p-5">
+      <div className="text-light">
         <Container>
           <FilterBar
             location={location}
@@ -148,35 +150,21 @@ const SearchBooks = () => {
         <h2 className='pt-5'>
           {searchedBooks.length
             ? `Viewing ${searchedBooks.length} results:`
-            : 'Search for a job to begin'}
+            : 'Job Results'}
         </h2>
+        <Button
+          variant="primary"
+          onClick={() => setShowJobForm(!showJobForm)}
+          className="custom-toggle-button"
+        >
+          {showJobForm ? 'Cancel' : 'Input a job'}
+        </Button>
+
+        {/* Conditionally render the SaveJobForm */}
+        {showJobForm && <SaveJobForm />}
+
         <Row>
-          {searchedBooks.map((book) => {
-            return (
-              <Col md="4" key={book.bookId}>
-                <Card border='dark'>
-                  {book.image ? (
-                    <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
-                  ) : null}
-                  <Card.Body>
-                    <Card.Title>{book.title}</Card.Title>
-                    <p className='small'>Authors: {book.authors}</p>
-                    <Card.Text>{book.description}</Card.Text>
-                    {Auth.loggedIn() && (
-                      <Button
-                        disabled={savedBookIds?.some((savedBookId: string) => savedBookId === book.bookId)}
-                        className='btn-block btn-info'
-                        onClick={() => handleSaveBook(book.bookId)}>
-                        {savedBookIds?.some((savedBookId: string) => savedBookId === book.bookId)
-                          ? 'This book has already been saved!'
-                          : 'Save this Book!'}
-                      </Button>
-                    )}
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })}
+          {/* Render searched job results here */}
         </Row>
       </Container>
     </>
