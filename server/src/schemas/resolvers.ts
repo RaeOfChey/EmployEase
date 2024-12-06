@@ -4,9 +4,6 @@ import { signToken } from '../utils/auth.js';
 //import jwt from 'jsonwebtoken';
 //const secret = process.env.JWT_SECRET || 'yourSecretKey';
 
-
-
-
 interface Context {
   user?: {
     data: {
