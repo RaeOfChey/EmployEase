@@ -159,6 +159,7 @@ const SearchBooks = () => {
             setIndustry={setIndustry}
             experience={experience}
             setExperience={setExperience}
+            handleFormSubmit={handleFormSubmit}
           />
         </Container>
       </div>
