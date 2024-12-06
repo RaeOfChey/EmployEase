@@ -7,7 +7,6 @@ interface JwtPayload {
 }
 
 
-
 const secret = process.env.JWT_SECRET || 'yourSecretKey';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {

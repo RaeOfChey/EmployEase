@@ -16,7 +16,7 @@ export const typeDefs = gql`
         _id: ID
         username: String
         jobCount: Int
-        savedJobs: [job]
+        savedJobs: [Job] # Fixed case to match the defined type
     }
 
     type Job {
@@ -28,6 +28,22 @@ export const typeDefs = gql`
         levels: [levels]
         locations: [locations]
         company: company
+    }
+
+    type refs {
+        landingPage: String
+    }
+
+    type levels {
+        name: String
+    }
+
+    type locations {
+        name: String
+    }
+
+    type company {
+        name: String
     }
 
     type Auth {
@@ -62,6 +78,5 @@ export const typeDefs = gql`
         company: companyInput
     }
 `;
-
 
 export default typeDefs;
