@@ -3,7 +3,6 @@ import type { FormEvent } from 'react';
 import {
   Container,
   Col,
-  Form,
   Button,
   Card,
   Row
@@ -19,6 +18,7 @@ import type { GoogleAPIBook } from '../models/GoogleAPIBook';
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
+import FilterBar from '../components/FilterBar';
 
 
 const SearchBooks = () => {
@@ -27,7 +27,7 @@ const SearchBooks = () => {
     update(cache, { data: { saveBook } }) {
       try {
         const { me }: any = cache.readQuery({ query: GET_ME });
-  
+
         cache.writeQuery({
           query: GET_ME,
           data: {
@@ -44,16 +44,18 @@ const SearchBooks = () => {
   });
 
   // create state for holding returned google api data
-  const [searchedBooks, setSearchedBooks] = useState<Book[]>([]);
+  const [searchedBooks] = useState<Book[]>([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
-  const [location] = useState('United States');
-  const [industry] = useState('IT');
-  const [experience] = useState('Entry Level');
+  const [location, setLocation] = useState('United States');
+  const [industry, setIndustry] = useState('IT');
+  const [experience, setExperience] = useState('Entry Level');
 
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+
+
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -132,7 +134,7 @@ const SearchBooks = () => {
     }
 
     try {
-      await saveBook({variables: {input:  bookToSave}});
+      await saveBook({ variables: { input: bookToSave } });
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
@@ -145,26 +147,14 @@ const SearchBooks = () => {
     <>
       <div className="text-light bg-dark p-5">
         <Container>
-          <h1>Search for Books!</h1>
-          <Form onSubmit={handleFormSubmit}>
-            <Row>
-              <Col xs={12} md={8}>
-                <Form.Control
-                  name='searchInput'
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  type='text'
-                  size='lg'
-                  placeholder='Search for a book'
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <Button type='submit' variant='success' size='lg'>
-                  Submit Search
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+          <FilterBar
+            location={location}
+            setLocation={setLocation}
+            industry={industry}
+            setIndustry={setIndustry}
+            experience={experience}
+            setExperience={setExperience}
+          />
         </Container>
       </div>
 
@@ -172,7 +162,7 @@ const SearchBooks = () => {
         <h2 className='pt-5'>
           {searchedBooks.length
             ? `Viewing ${searchedBooks.length} results:`
-            : 'Search for a book to begin'}
+            : 'Search for a job to begin'}
         </h2>
         <Row>
           {searchedBooks.map((book) => {

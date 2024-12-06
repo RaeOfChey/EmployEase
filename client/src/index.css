@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-  font-family: 'Inter Tight', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Work Sans', Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
@@ -37,9 +37,9 @@ body {
   background-repeat: no-repeat no-repeat;
   background-position: center center;
   margin: 0;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Work Sans', Helvetica, Arial, sans-serif;
 }
 
 h1 {
@@ -87,7 +87,17 @@ tbody tr:nth-child(odd) {
 /* Navbar Content */
 .nav {
   display: flex;
+}
+
+.navbar {
   padding: 1em 2em;
+}
+
+.navbar-logo {
+  height: 40px;
+  width: 40px;
+  margin-right: 10px;
+  object-fit: contain;
 }
 
 .nav ul {
@@ -104,10 +114,6 @@ tbody tr:nth-child(odd) {
   font-weight: 900;
 }
 
-.nav-title a {
-  color: #b864c4;
-}
-
 .nav-item {
   display: block;
   margin-left: auto;
@@ -115,8 +121,72 @@ tbody tr:nth-child(odd) {
 }
 
 .nav-link {
-  color: #fff;
+  color: #000;
   text-decoration: none;
+  font-weight: 500;
+  margin: 0px 10px;
+}
+
+.nav-link.custom-hover {
+  font-weight: normal;
+  text-decoration: none;
+  position: relative;
+  color: #000;
+}
+
+.nav-link.custom-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #4CAF50;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+  color: #000;
+}
+
+.nav-link.custom-hover:hover::after,
+.nav-link.custom-hover.active::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+
+
+.custom-dropdown .form-select:focus,
+.custom-dropdown .dropdown-toggle:focus {
+  border-color: #4CAF50; 
+  box-shadow: 0 0 0 0.25rem rgba(72, 157, 73, 0.5);
+}
+
+.custom-dropdown .dropdown-menu .dropdown-item:hover,
+.custom-dropdown .dropdown-menu .dropdown-item:focus {
+  background-image: none !important;
+  background-color: #4CAF50 !important;
+  color: white !important;
+}
+
+.custom-dropdown .dropdown-menu .dropdown-item:active {
+  background-color: #45a049 !important;
+  color: white !important;
+}
+
+
+
+
+button.custom-search-btn {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+button.custom-search-btn:hover {
+  background-color: #45a049;
+  border-color: #45a049;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .active {

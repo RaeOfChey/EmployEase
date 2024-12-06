@@ -1,50 +1,79 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from './SignupForm';
 import LoginForm from './LoginForm';
 
 import Auth from '../utils/auth';
 
+import logo from '../assets/logo.png';
+import '../index.css';
+
 const AppNavbar = () => {
-  // set modal display state
+  // Set modal display state
   const [showModal, setShowModal] = useState(false);
+
+  // Get current location (route)
+  const location = useLocation();
+
+  // Check if the current route matches the nav link
+  const isActive = (path: string) => location.pathname === path ? 'active' : '';
 
   return (
     <>
-      <Navbar bg='dark' variant='dark' expand='lg'>
+      <Navbar bg='light' variant='light' expand='lg'>
         <Container fluid>
-          <Navbar.Brand as={Link} to='/'>
-            Google Books Search
+          <Navbar.Brand as={Link} to='/' className='d-flex align-items-center'>
+            <img
+              src={logo}
+              alt='EmployEase Logo'
+              className='navbar-logo'
+            />
+            <span className='ms-2'>EmployEase</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
-              <Nav.Link as={Link} to='/'>
-                Search For Books
+              <Nav.Link
+                as={Link}
+                to='/'
+                className={`nav-link custom-hover ${isActive('/')}`}
+              >
+                Search for Jobs
               </Nav.Link>
-              {/* if user is logged in show saved books and logout */}
+              <Nav.Link
+                as={Link}
+                to='/saved'
+                className={`nav-link custom-hover ${isActive('/saved')}`}
+              >
+                Saved Applications
+              </Nav.Link>
               {Auth.loggedIn() ? (
-                <>
-                  <Nav.Link as={Link} to='/saved'>
-                    See Your Books
-                  </Nav.Link>
-                  <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
-                </>
+                <Nav.Link
+                  onClick={Auth.logout}
+                  className='nav-link custom-hover'
+                >
+                  Logout
+                </Nav.Link>
               ) : (
-                <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+                <Nav.Link
+                  onClick={() => setShowModal(true)}
+                  className='nav-link custom-hover'
+                >
+                  Login/Sign Up
+                </Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {/* set modal data up */}
+
+      {/* Modal for Login/Signup */}
       <Modal
         size='lg'
         show={showModal}
         onHide={() => setShowModal(false)}
         aria-labelledby='signup-modal'>
-        {/* tab container to do either signup or login component */}
         <Tab.Container defaultActiveKey='login'>
           <Modal.Header closeButton>
             <Modal.Title id='signup-modal'>
