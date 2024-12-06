@@ -2,12 +2,12 @@ import { Schema, model, type Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 // import schema from Book.js
-import { type BookDocument, bookSchema } from './Book.js';
+import { type JobDocument, jobSchema } from './Job.js';
 
 export interface IUser extends Document {
   username: string;
   password: string;
-  savedBooks: BookDocument[];
+  savedJobs: JobDocument[];
   isCorrectPassword(password: string): Promise<boolean>;
 }
 
@@ -23,7 +23,7 @@ const userSchema = new Schema<IUser>(
       required: true,
     },
     // set savedBooks to be an array of data that adheres to the bookSchema
-    savedBooks: [bookSchema],
+    savedJobs: [jobSchema],
   },
   // set this to use virtual below
   {
@@ -50,7 +50,7 @@ userSchema.methods.isCorrectPassword = async function (password: string) {
 
 // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
 userSchema.virtual('bookCount').get(function () {
-  return this.savedBooks.length;
+  return this.savedJobs.length;
 });
 
 const User = model<IUser>('User', userSchema);

@@ -1,21 +1,21 @@
-import type { Request, Response } from 'express';
+// import type { Request, Response } from 'express';
 // import user model
-import User from '../models/User.js';
+// import User from '../models/User.js';
 // import sign token function from auth
 // import { signToken } from '../services/auth.js';
 
 // get a single user by either their id or their username
-export const getSingleUser = async (req: Request, res: Response) => {
-  const foundUser = await User.findOne({
-    $or: [{ _id: req.user ? req.user._id : req.params.id }, { username: req.params.username }],
-  });
+// export const getSingleUser = async (req: Request, res: Response) => {
+//   const foundUser = await User.findOne({
+//     $or: [{ _id: req.user ? req.user._id : req.params.id }, { username: req.params.username }],
+//   });
 
-  if (!foundUser) {
-    return res.status(400).json({ message: 'Cannot find a user with this id!' });
-  }
+//   if (!foundUser) {
+//     return res.status(400).json({ message: 'Cannot find a user with this id!' });
+//   }
 
-  return res.json(foundUser);
-};
+//   return res.json(foundUser);
+// };
 
 // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
 // export const createUser = async (req: Request, res: Response) => {
@@ -47,29 +47,29 @@ export const getSingleUser = async (req: Request, res: Response) => {
 
 // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
 // user comes from `req.user` created in the auth middleware function
-export const saveBook = async (req: Request, res: Response) => {
-  try {
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: req.user._id },
-      { $addToSet: { savedBooks: req.body } },
-      { new: true, runValidators: true }
-    );
-    return res.json(updatedUser);
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json(err);
-  }
-};
+// export const saveBook = async (req: Request, res: Response) => {
+//   try {
+//     const updatedUser = await User.findOneAndUpdate(
+//       { _id: req.user._id },
+//       { $addToSet: { savedJobs: req.body } },
+//       { new: true, runValidators: true }
+//     );
+//     return res.json(updatedUser);
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(400).json(err);
+//   }
+// };
 
-// remove a book from `savedBooks`
-export const deleteBook = async (req: Request, res: Response) => {
-  const updatedUser = await User.findOneAndUpdate(
-    { _id: req.user._id },
-    { $pull: { savedBooks: { bookId: req.params.bookId } } },
-    { new: true }
-  );
-  if (!updatedUser) {
-    return res.status(404).json({ message: "Couldn't find user with this id!" });
-  }
-  return res.json(updatedUser);
-};
+// // remove a book from `savedBooks`
+// export const deleteBook = async (req: Request, res: Response) => {
+//   const updatedUser = await User.findOneAndUpdate(
+//     { _id: req.user._id },
+//     { $pull: { savedJobs: { bookId: req.params.bookId } } },
+//     { new: true }
+//   );
+//   if (!updatedUser) {
+//     return res.status(404).json({ message: "Couldn't find user with this id!" });
+//   }
+//   return res.json(updatedUser);
+// };
