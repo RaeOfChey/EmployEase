@@ -1,18 +1,12 @@
 import { User } from '../models/index.js';
 import { AuthenticationError } from 'apollo-server-express';
 import { signToken } from '../utils/auth.js';
-//import jwt from 'jsonwebtoken';
-//const secret = process.env.JWT_SECRET || 'yourSecretKey';
-
-
-
 
 interface Context {
   user?: {
     data: {
       _id: string;
       username: string;
-      email: string;
     };
     iat: number;
     exp: number;
@@ -20,45 +14,32 @@ interface Context {
 }
 
 interface AddUserArgs {
-
   username: string;
-  email: string;
   password: string;
-
 }
 
-interface SaveBookArgs {
+interface SaveJobArgs {
   input: {
-    bookId: string;
-    authors: string[];
-    description: string;
-    title: string;
-    image: string;
-    link: string;
+    jobId: string;
+    content: string;
+    jobTitle: string;
+    datePublished: string;
+    refs: { landingPage: string };
+    levels: { name: string }[];
+    locations: { name: string }[];
+    company: { name: string };
   };
 }
-// interface UserArgs {
-//   username: string;
-// }
-
-
-// const authenticate = (context: Context) => {
-//   if (!context.user) {
-//     throw new AuthenticationError('Not logged in');
-//   }
-// };
 
 export const resolvers = {
   Query: {
-
     me: async (_: any, __: any, context: Context) => {
-
       if (!context.user) {
         throw new AuthenticationError('Not logged in');
       }
 
       try {
-        const user = await User.findById(context.user.data._id).populate('savedBooks');
+        const user = await User.findById(context.user.data._id).populate('savedJobs');
         if (!user) {
           throw new Error('User not found');
         }
@@ -68,76 +49,71 @@ export const resolvers = {
         throw new Error('Failed to fetch user data');
       }
     },
-
   },
   Mutation: {
-    login: async (_: any, { email, password }: any) => {
-      const user = await User.findOne({ email });
+    login: async (_: any, { username, password }: any) => {
+      const user = await User.findOne({ username });
       if (!user || !(await user.isCorrectPassword(password))) {
         throw new AuthenticationError('Invalid credentials');
       }
 
-    //  const token = jwt.sign({ _id: user._id }, secret, { expiresIn: '2h' });
-      const token = signToken(user.username, user.email, user._id);
+      const token = signToken(user.username, user._id);
       return { token, user };
     },
-    addUser: async (_parent: any, { username, email, password }: AddUserArgs) => {
-      // Create a new user with the provided username, email, and password
-
-      const user = await User.create({ username, email, password });
-
-      // Sign a token with the user's information
-      const token = signToken(username, email, user._id);
-
-      // Return the token and the user
+    addUser: async (_: any, { username, password }: AddUserArgs) => {
+      const user = await User.create({ username, password });
+      const token = signToken(username, user._id);
       return { token, user };
-
-      // throw new AuthenticationError('Input invalid');
     },
-    saveBook: async (_: any, { input }: { input: SaveBookArgs }, context: Context) => {
-      // console.log("context: ", context);
-
-    
+    saveJob: async (_: any, { input }: { input: SaveJobArgs }, context: Context) => {
       if (!context.user || !context.user.data) {
-        throw new AuthenticationError("Not logged in");
+        throw new AuthenticationError('Not logged in');
       }
-    
-   //   const userId = context.user.data._id;
-
-    
 
       try {
         const updatedUser = await User.findByIdAndUpdate(
           context.user.data._id,
           {
-            $push: { savedBooks: input }, // Push the full Book object
+            $push: { savedJobs: input },
           },
-          { new: true } // Return the updated user
-        ).populate("savedBooks");
-    
+          { new: true }
+        ).populate('savedJobs');
+
         if (!updatedUser) {
-          throw new Error("User update failed or user not found");
+          throw new Error('User update failed or user not found');
         }
 
         return updatedUser;
       } catch (err) {
-        console.error("Error in saveBook resolver:", err);
-        throw new Error("Failed to save book");
+        console.error('Error in saveJob resolver:', err);
+        throw new Error('Failed to save job');
       }
     },
-    removeBook: async (_: any, { bookId }: any, context: Context) => {
-      if (context.user) {
-        return User.findByIdAndUpdate(
+    removeJob: async (_: any, { jobId }: any, context: Context) => {
+      if (!context.user) {
+        throw new AuthenticationError('Not logged in');
+      }
+
+      try {
+        const updatedUser = await User.findByIdAndUpdate(
           context.user.data._id,
-          { $pull: { savedBooks: { bookId } } },
+          {
+            $pull: { savedJobs: { jobId } },
+          },
           { new: true }
         );
+
+        if (!updatedUser) {
+          throw new Error('User not found');
+        }
+
+        return updatedUser;
+      } catch (err) {
+        console.error('Error in removeJob resolver:', err);
+        throw new Error('Failed to remove job');
       }
-      throw new AuthenticationError('Not logged in');
     },
   },
 };
-
-
 
 export default resolvers;

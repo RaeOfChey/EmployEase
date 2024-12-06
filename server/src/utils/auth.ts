@@ -29,8 +29,8 @@ export const authenticateToken = async ({ req }: any) => {
   }
 };
 
-export const signToken = (username: string, email: string, _id: unknown) => {
-  const payload = { username, email, _id };
+export const signToken = (username: string, _id: unknown) => {
+  const payload = { username, _id };
 
   const secretKey = process.env.JWT_SECRET_KEY;
   if (!secretKey) {
