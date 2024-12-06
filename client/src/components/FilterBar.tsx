@@ -9,6 +9,7 @@ interface FilterBarProps {
     setIndustry: React.Dispatch<React.SetStateAction<string>>;
     experience: string;
     setExperience: React.Dispatch<React.SetStateAction<string>>;
+    handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -18,6 +19,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     setIndustry,
     experience,
     setExperience,
+    handleFormSubmit
 }) => {
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -33,7 +35,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     };
 
     return (
-        <Form className="filter-bar custom-filter-bar">
+        <Form className="filter-bar custom-filter-bar" onSubmit={handleFormSubmit}>
             <Row>
                 <Col md={3}>
                     <Form.Group controlId="location" className="custom-location">

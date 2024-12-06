@@ -16,7 +16,7 @@ import type { Book } from '../models/Book';
 import type { GoogleAPIBook } from '../models/GoogleAPIBook';
 
 import { useMutation } from '@apollo/client';
-import { SAVE_BOOK } from '../utils/mutations';
+import { SAVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 
@@ -28,7 +28,7 @@ const SearchBooks = () => {
 
   //const [saveBook] = useMutation(SAVE_BOOK);
 
-  const [saveBook] = useMutation(SAVE_BOOK, {
+  const [saveBook] = useMutation(SAVE_JOB, {
     update(cache, { data: { saveBook } }) {
       try {
         const { me }: any = cache.readQuery({ query: GET_ME });
@@ -159,6 +159,7 @@ const SearchBooks = () => {
             setIndustry={setIndustry}
             experience={experience}
             setExperience={setExperience}
+            handleFormSubmit={handleFormSubmit}
           />
         </Container>
       </div>

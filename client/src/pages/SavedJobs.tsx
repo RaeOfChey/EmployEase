@@ -9,7 +9,7 @@ import type { User } from '../models/User';
 import type { Book } from '../models/Book';
 
 
-import { REMOVE_BOOK } from '../utils/mutations';
+import { REMOVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
 import SaveJobForm from '../components/SaveJobForm';
@@ -18,7 +18,7 @@ const SavedBooks = () => {
 
 
   const { loading, data } = useQuery(GET_ME);
-  const [removeBook] = useMutation(REMOVE_BOOK, {refetchQueries: [{ query: GET_ME }],});
+  const [removeBook] = useMutation(REMOVE_JOB, {refetchQueries: [{ query: GET_ME }],});
   
   //const [removeBook] = useMutation(REMOVE_BOOK, { refetchQueries: 'GET_ME'});
 
