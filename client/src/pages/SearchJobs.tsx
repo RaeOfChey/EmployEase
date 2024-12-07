@@ -9,24 +9,30 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-
-import { searchMuseJobs} from '../../../server/src/routes/api/API';
-import { saveJobIds, getSavedJobIds } from '../utils/localStorage';
+//import { searchGoogleBooks } from '../../../server/src/routes/api/API';
+import { searchMuseJobs } from '../../../server/src/routes/api/API';
 import type { Job } from '../models/Job';
-import type { GoogleAPIBook } from '../models/GoogleAPIBook';
-
 import { useMutation } from '@apollo/client';
 import { SAVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 
-import SaveJobForm from '../components/SaveJobForm';
+// import SaveJobForm from '../components/SaveJobForm';
 
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
 
   //const [saveJob] = useMutation(SAVE_JOB);
+  // create state for holding returned google api data
+  const [searchedJobs] = useState<Job[]>([]);
+  // create state for holding our search field data
+  const [location, setLocation] = useState('United States');
+  const [industry, setIndustry] = useState('IT');
+  const [experience, setExperience] = useState('Entry Level');
+  const [searchJobs, setSearchJobs] = useState<Job[]>([]);
+
+
 
   const [saveJob] = useMutation(SAVE_JOB, {
     update(cache, { data: { saveJob } }) {
@@ -48,23 +54,6 @@ const SearchJobs = () => {
     },
   });
 
-  // create state for holding returned google api data
-  const [searchedJobs] = useState<Job[]>([]);
-  // create state for holding our search field data
-  const [searchInput, setSearchInput] = useState('');
-  const [location, setLocation] = useState('United States');
-  const [industry, setIndustry] = useState('IT');
-  const [experience, setExperience] = useState('Entry Level');
-
-
-  // create state to hold saved jobId values
-  const [savedJobIds, setSavedJobIds] = useState(getSavedJobIds());
-
-
-  // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
-  useEffect(() => {
-    saveJobIds(savedJobIds);
-  }, [savedJobIds]);
 
   // create method to search for jobs and set state on form submit
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -82,16 +71,18 @@ const SearchJobs = () => {
       }
 
 
+      // const data = await response.json();
+      // console.log('Full response data:', data);
 
-      const { results:items } = await response.json();
+      const { results } = await response.json();
 
+      console.log("results")
+      console.log(results)
 
-      console.log("results:items ")
-      console.log(items)
-    
+      //parse out data to match interface
 
-      // setSearchedjobs(jobData);
-      setSearchInput('');
+      setSearchJobs(results)
+
     } catch (err) {
       console.error(err);
     }
@@ -118,12 +109,11 @@ const SearchJobs = () => {
     try {
       await saveJob({ variables: { input: jobToSave } });
 
-      // if job successfully saves to user's account, save job id to state
-      setSavedJobIds([...savedJobIds, jobToSave.jobId]);
     } catch (err) {
       console.error(err);
     }
   };
+
 
   return (
     <>
@@ -156,7 +146,7 @@ const SearchJobs = () => {
         </Button>
 
         {/* Conditionally render the SaveJobForm */}
-        {showJobForm && <SaveJobForm />}
+        {/* {showJobForm && <SaveJobForm />} */}
 
         <Row>
           {/* Render searched job results here */}
