@@ -6,12 +6,9 @@ import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations.ts';
 import Auth from '../utils/auth';
 
-
-
-
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
 const LoginForm = ({ }: { handleModalClose: () => void }) => {
-  const [userFormData, setUserFormData] = useState({ username: '', password: '', savedBooks: [] });
+  const [userFormData, setUserFormData] = useState({ username: '', password: '', savedJobs: [] });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -45,7 +42,7 @@ const LoginForm = ({ }: { handleModalClose: () => void }) => {
     setUserFormData({
       username: '',
       password: '',
-      savedBooks: [],
+      savedJobs: [],
     });
   };
 

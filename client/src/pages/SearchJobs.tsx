@@ -9,10 +9,10 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-//import { searchGoogleBooks } from '../../../server/src/routes/api/API';
+
 import { searchMuseJobs} from '../../../server/src/routes/api/API';
-import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
-import type { Book } from '../models/Book';
+import { saveJobIds, getSavedJobIds } from '../utils/localStorage';
+import type { Job } from '../models/Job';
 import type { GoogleAPIBook } from '../models/GoogleAPIBook';
 
 import { useMutation } from '@apollo/client';
@@ -23,13 +23,13 @@ import FilterBar from '../components/FilterBar';
 import SaveJobForm from '../components/SaveJobForm';
 
 
-const SearchBooks = () => {
+const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
 
-  //const [saveBook] = useMutation(SAVE_BOOK);
+  //const [saveJob] = useMutation(SAVE_JOB);
 
-  const [saveBook] = useMutation(SAVE_JOB, {
-    update(cache, { data: { saveBook } }) {
+  const [saveJob] = useMutation(SAVE_JOB, {
+    update(cache, { data: { saveJob } }) {
       try {
         const { me }: any = cache.readQuery({ query: GET_ME });
 
@@ -38,7 +38,7 @@ const SearchBooks = () => {
           data: {
             me: {
               ...me,
-              savedBooks: [...me.savedBooks, saveBook],
+              savedJobs: [...me.savedJobs, saveJob],
             },
           },
         });
@@ -49,7 +49,7 @@ const SearchBooks = () => {
   });
 
   // create state for holding returned google api data
-  const [searchedBooks] = useState<Book[]>([]);
+  const [searchedJobs] = useState<Job[]>([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
   const [location, setLocation] = useState('United States');
@@ -57,18 +57,16 @@ const SearchBooks = () => {
   const [experience, setExperience] = useState('Entry Level');
 
 
-  // create state to hold saved bookId values
-  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+  // create state to hold saved jobId values
+  const [savedJobIds, setSavedJobIds] = useState(getSavedJobIds());
 
 
-
-  // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
-    saveBookIds(savedBookIds);
-  }, [savedBookIds]);
+    saveJobIds(savedJobIds);
+  }, [savedJobIds]);
 
-  // create method to search for books and set state on form submit
+  // create method to search for jobs and set state on form submit
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -77,7 +75,6 @@ const SearchBooks = () => {
     // }
     //location, industry and experience leve
     try {
-      //const response = await searchGoogleBooks(searchInput);
       const response = await searchMuseJobs(location, industry, experience);
 
       if (!response.ok) {
@@ -91,43 +88,23 @@ const SearchBooks = () => {
 
       console.log("results:items ")
       console.log(items)
-      
+    
 
-
-      //const { items } = await response.json();
-      // const data = await response.json();
-
-      // console.log("data: ")
-      // console.log(data)
-
-
-      // if (!items) {
-      //   throw new Error('No books found!');
-      // }
-
-      // const bookData = items.map((book: GoogleAPIBook) => ({
-      //   bookId: book.id,
-      //   authors: book.volumeInfo.authors || ['No author to display'],
-      //   title: book.volumeInfo.title,
-      //   description: book.volumeInfo.description,
-      //   image: book.volumeInfo.imageLinks?.thumbnail || '',
-      // }));
-
-      // setSearchedBooks(bookData);
+      // setSearchedjobs(jobData);
       setSearchInput('');
     } catch (err) {
       console.error(err);
     }
   };
 
-  // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId: string) => {
-    // find the book in `searchedBooks` state by the matching id
+  // create function to handle saving a job to our database
+  const handleSaveJob = async (jobId: string) => {
+    // find the job in `searchedjobs` state by the matching id
 
-    const bookToSave: Book = searchedBooks.find((book) => book.bookId === bookId)!;
+    const jobToSave: Job = searchedJobs.find((job) => job.jobId === jobId)!;
 
-    if (!bookToSave) {
-      console.error('Book not found in searchedBooks');
+    if (!jobToSave) {
+      console.error('Job not found in searchedJobs');
       return;
     }
     
@@ -139,10 +116,10 @@ const SearchBooks = () => {
     }
 
     try {
-      await saveBook({ variables: { input: bookToSave } });
+      await saveJob({ variables: { input: jobToSave } });
 
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      // if job successfully saves to user's account, save job id to state
+      setSavedJobIds([...savedJobIds, jobToSave.jobId]);
     } catch (err) {
       console.error(err);
     }
@@ -166,8 +143,8 @@ const SearchBooks = () => {
 
       <Container>
         <h2 className='pt-5'>
-          {searchedBooks.length
-            ? `Viewing ${searchedBooks.length} results:`
+          {searchedJobs.length
+            ? `Viewing ${searchedJobs.length} results:`
             : 'Job Results'}
         </h2>
         <Button
@@ -189,4 +166,4 @@ const SearchBooks = () => {
   );
 };
 
-export default SearchBooks;
+export default SearchJobs;
