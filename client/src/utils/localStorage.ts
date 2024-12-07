@@ -1,30 +1,30 @@
-export const getSavedBookIds = () => {
-  const savedBookIds = localStorage.getItem('saved_books')
-    ? JSON.parse(localStorage.getItem('saved_books')!)
+export const getSavedJobIds = () => {
+  const savedJobIds = localStorage.getItem('saved_jobs')
+    ? JSON.parse(localStorage.getItem('saved_jobs')!)
     : [];
 
-  return savedBookIds;
+  return savedJobIds;
 };
 
-export const saveBookIds = (bookIdArr: string[]) => {
-  if (bookIdArr.length) {
-    localStorage.setItem('saved_books', JSON.stringify(bookIdArr));
+export const saveJobIds = (jobIdArr: string[]) => {
+  if (jobIdArr.length) {
+    localStorage.setItem('saved_jobs', JSON.stringify(jobIdArr));
   } else {
-    localStorage.removeItem('saved_books');
+    localStorage.removeItem('saved_jobs');
   }
 };
 
-export const removeBookId = (bookId: string) => {
-  const savedBookIds = localStorage.getItem('saved_books')
-    ? JSON.parse(localStorage.getItem('saved_books')!)
+export const removeJobId = (jobId: string) => {
+  const savedJobIds = localStorage.getItem('saved_jobs')
+    ? JSON.parse(localStorage.getItem('saved_jobs')!)
     : null;
 
-  if (!savedBookIds) {
+  if (!savedJobIds) {
     return false;
   }
 
-  const updatedSavedBookIds = savedBookIds?.filter((savedBookId: string) => savedBookId !== bookId);
-  localStorage.setItem('saved_books', JSON.stringify(updatedSavedBookIds));
+  const updatedSavedJobIds = savedJobIds?.filter((savedJobId: string) => savedJobId !== jobId);
+  localStorage.setItem('saved_jobs', JSON.stringify(updatedSavedJobIds));
 
   return true;
 };

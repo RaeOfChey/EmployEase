@@ -2,11 +2,10 @@ import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 
 import { useQuery, useMutation } from '@apollo/client';
 
-
 import Auth from '../utils/auth';
-import { removeBookId } from '../utils/localStorage';
+import { removeJobId } from '../utils/localStorage';
 import type { User } from '../models/User';
-import type { Book } from '../models/Book';
+import type { Job } from '../models/Job';
 
 
 import { REMOVE_JOB } from '../utils/mutations';
@@ -14,19 +13,19 @@ import { GET_ME } from '../utils/queries';
 
 import SaveJobForm from '../components/SaveJobForm';
 
-const SavedBooks = () => {
+const SavedJobs = () => {
 
 
   const { loading, data } = useQuery(GET_ME);
-  const [removeBook] = useMutation(REMOVE_JOB, {refetchQueries: [{ query: GET_ME }],});
-  
-  //const [removeBook] = useMutation(REMOVE_BOOK, { refetchQueries: 'GET_ME'});
+  const [removeJob] = useMutation(REMOVE_JOB, {refetchQueries: [{ query: GET_ME }],});
+
+  //const [removeJob] = useMutation(REMOVE_JOB, { refetchQueries: 'GET_ME'});
 
   const userData: User = data?.me || {};
 
 
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId: string) => {
+  // create function that accepts the jobs's mongo _id value as param and deletes the job from the database
+  const handleDeleteJob = async (jobId: string) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -34,14 +33,14 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await removeBook({ variables: { bookId }});
+      const response = await removeJob({ variables: { jobId }});
 
       if (!response) {
         throw new Error('something went wrong!');
       }
 
-      // upon success, remove book's id from localStorage
-      removeBookId(bookId);
+      // upon success, remove job's id from localStorage
+      removeJobId(jobId);
     } catch (err) {
       console.error("err: ", err);
     }
@@ -65,9 +64,9 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData?.savedBooks?.length
-            ? `Viewing ${userData?.savedBooks?.length} saved ${
-                userData?.savedBooks?.length === 1 ? 'book' : 'books'
+          {userData?.savedJobs?.length
+            ? `Viewing ${userData?.savedJobs?.length} saved ${
+                userData?.savedJobs?.length === 1 ? 'job' : 'jobs'
               }:`
             : 'You have no saved jobs. Search for jobs and save them to view later here.'}
         </h2>
@@ -76,4 +75,4 @@ const SavedBooks = () => {
   );
 };
 
-export default SavedBooks;
+export default SavedJobs;

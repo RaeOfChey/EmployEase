@@ -1,7 +1,7 @@
-import type { Book } from './Book';
+import type { Job } from './Job';
 
 export interface User {
   username: string | null;
   password: string | null;
-  savedBooks: Book[];
+  savedJobs: Job[];
 }
