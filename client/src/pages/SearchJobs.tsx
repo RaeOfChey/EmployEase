@@ -13,7 +13,6 @@ import Auth from '../utils/auth';
 import { searchMuseJobs} from '../../../server/src/routes/api/API';
 import { saveJobIds, getSavedJobIds } from '../utils/localStorage';
 import type { Job } from '../models/Job';
-import type { GoogleAPIBook } from '../models/GoogleAPIBook';
 
 import { useMutation } from '@apollo/client';
 import { SAVE_JOB } from '../utils/mutations';
