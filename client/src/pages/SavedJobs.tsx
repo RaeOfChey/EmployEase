@@ -3,23 +3,18 @@ import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/client';
 
 import Auth from '../utils/auth';
-import { removeJobId } from '../utils/localStorage';
 import type { User } from '../models/User';
 import type { Job } from '../models/Job';
-
-
 import { REMOVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
 import SaveJobForm from '../components/SaveJobForm';
 
-const SavedJobs = () => {
+  const SavedJobs = () => {
 
 
   const { loading, data } = useQuery(GET_ME);
   const [removeJob] = useMutation(REMOVE_JOB, {refetchQueries: [{ query: GET_ME }],});
-
-  //const [removeJob] = useMutation(REMOVE_JOB, { refetchQueries: 'GET_ME'});
 
   const userData: User = data?.me || {};
 
@@ -39,8 +34,6 @@ const SavedJobs = () => {
         throw new Error('something went wrong!');
       }
 
-      // upon success, remove job's id from localStorage
-      removeJobId(jobId);
     } catch (err) {
       console.error("err: ", err);
     }
