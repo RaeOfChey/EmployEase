@@ -9,13 +9,13 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-//import { searchGoogleBooks } from '../../../server/src/routes/api/API';
 import { searchMuseJobs } from '../../../server/src/routes/api/API';
 import type { Job } from '../models/Job';
 import { useMutation } from '@apollo/client';
 import { SAVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
+import { MuseApiInfo } from '../models/MuseApiJobs';
 
 // import SaveJobForm from '../components/SaveJobForm';
 
@@ -25,14 +25,12 @@ const SearchJobs = () => {
 
   //const [saveJob] = useMutation(SAVE_JOB);
   // create state for holding returned google api data
-  const [searchedJobs] = useState<Job[]>([]);
+  //const [searchedJobs] = useState<Job[]>([]);
   // create state for holding our search field data
   const [location, setLocation] = useState('United States');
   const [industry, setIndustry] = useState('IT');
   const [experience, setExperience] = useState('Entry Level');
   const [searchJobs, setSearchJobs] = useState<Job[]>([]);
-
-
 
   const [saveJob] = useMutation(SAVE_JOB, {
     update(cache, { data: { saveJob } }) {
@@ -73,15 +71,27 @@ const SearchJobs = () => {
 
       // const data = await response.json();
       // console.log('Full response data:', data);
-
+      
       const { results } = await response.json();
 
       console.log("results")
       console.log(results)
 
+      const jobData: Job[] = results.map((job: MuseApiInfo) => ({
+        jobId: job.id,
+        content: job.contents,
+        jobTitle: job.name,
+        datePublished: job.publication_date,
+        refs: { landingPage: job.refs.landing_page },
+        levels: job.levels.map(level => ({ name: level.name })),
+        locations: job.locations.map(location => ({ name: location.name })),
+        company: { name: job.company.name },
+      }));
+
+
       //parse out data to match interface
 
-      setSearchJobs(results)
+      setSearchJobs(jobData);
 
     } catch (err) {
       console.error(err);
@@ -92,7 +102,7 @@ const SearchJobs = () => {
   const handleSaveJob = async (jobId: string) => {
     // find the job in `searchedjobs` state by the matching id
 
-    const jobToSave: Job = searchedJobs.find((job) => job.jobId === jobId)!;
+    const jobToSave: Job = searchJobs.find((job) => job.jobId === jobId)!;
 
     if (!jobToSave) {
       console.error('Job not found in searchedJobs');
@@ -133,8 +143,8 @@ const SearchJobs = () => {
 
       <Container>
         <h2 className='pt-5'>
-          {searchedJobs.length
-            ? `Viewing ${searchedJobs.length} results:`
+          {searchJobs.length
+            ? `Viewing ${searchJobs.length} results:`
             : 'Job Results'}
         </h2>
         <Button
