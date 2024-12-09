@@ -32,6 +32,8 @@ interface SearchResultCardProps {
 }
 
 const SearchResultCard: React.FC<SearchResultCardProps> = ({ job }) => {
+
+
   return (
     <div className="search-result-card">
       <div className="company-info">

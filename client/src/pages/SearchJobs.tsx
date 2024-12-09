@@ -17,7 +17,6 @@ import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 import SearchResultCard from '../components/SearchResultCard';  // Ensure the path is correct
-
 import SaveJobForm from '../components/SaveJobForm';
 
 const SearchJobs = () => {
@@ -134,7 +133,7 @@ const SearchJobs = () => {
         </Button>
 
         {/* Conditionally render the SaveJobForm */}
-        {showJobForm && <SaveJobForm />}
+        {/* {showJobForm && <SaveJobForm />} */}
 
         <Row>
           {/* Render searched job results here */}

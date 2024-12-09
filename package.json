@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
     "@types/jest": "^29.5.14",
     "concurrently": "^8.2.0"
   },
