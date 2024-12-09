@@ -28,6 +28,7 @@
   "dependencies": {
     "apollo-server-express": "^3.13.0",
     "eslint": "^9.16.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
     "react-bootstrap": "^2.10.5"
   }
 }
