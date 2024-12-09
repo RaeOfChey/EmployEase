@@ -20,7 +20,7 @@ import SaveJobForm from '../components/SaveJobForm';
 
 
   // create function that accepts the jobs's mongo _id value as param and deletes the job from the database
-  const handleDeleteJob = async (jobId: string) => {
+  const handleDeleteJob = async (jobId: number) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {

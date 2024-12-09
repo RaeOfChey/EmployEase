@@ -1,5 +1,5 @@
 export interface MuseApiInfo {
-  id: string
+  id: number
   contents: string;
   name: string;
   publication_date: string;
