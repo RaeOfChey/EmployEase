@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { FormEvent } from 'react';
 import {
+  Card,
   Container,
   Col,
   Button,
-  Card,
-  Row
+  Row,
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
@@ -16,20 +16,16 @@ import { SAVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
+import SearchResultCard from '../components/SearchResultCard';  // Ensure the path is correct
 
-// import SaveJobForm from '../components/SaveJobForm';
-
+import SaveJobForm from '../components/SaveJobForm';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
 
-  //const [saveJob] = useMutation(SAVE_JOB);
-  // create state for holding returned google api data
-  //const [searchedJobs] = useState<Job[]>([]);
-  // create state for holding our search field data
-  const [location, setLocation] = useState('United States');
-  const [industry, setIndustry] = useState('IT');
-  const [experience, setExperience] = useState('Entry Level');
+  const [location, setLocation] = useState<string[]>(['United States']);
+  const [industry, setIndustry] = useState<string[]>(['IT']);
+  const [experience, setExperience] = useState<string[]>(['Entry Level']);
   const [searchJobs, setSearchJobs] = useState<Job[]>([]);
 
   const [saveJob] = useMutation(SAVE_JOB, {
@@ -52,15 +48,9 @@ const SearchJobs = () => {
     },
   });
 
-
-  // create method to search for jobs and set state on form submit
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // if (!searchInput) {
-    //   return false;
-    // }
-    //location, industry and experience leve
     try {
       const response = await searchMuseJobs(location, industry, experience);
 
@@ -68,28 +58,21 @@ const SearchJobs = () => {
         throw new Error('something went wrong!');
       }
 
-
-      // const data = await response.json();
-      // console.log('Full response data:', data);
-      
       const { results } = await response.json();
 
-      console.log("results")
-      console.log(results)
-
-      const jobData: Job[] = results.map((job: MuseApiInfo) => ({
-        jobId: job.id,
-        content: job.contents,
-        jobTitle: job.name,
-        datePublished: job.publication_date,
-        refs: { landingPage: job.refs.landing_page },
-        levels: job.levels.map(level => ({ name: level.name })),
-        locations: job.locations.map(location => ({ name: location.name })),
-        company: { name: job.company.name },
-      }));
-
-
-      //parse out data to match interface
+      const jobData: Job[] = results.map((job: MuseApiInfo) => {
+        console.log(job.contents);
+        return {
+          jobId: job.id,
+          content: job.contents,
+          jobTitle: job.name,
+          datePublished: job.publication_date,
+          refs: { landingPage: job.refs.landing_page },
+          levels: job.levels.map(level => ({ name: level.name })),
+          locations: job.locations.map(location => ({ name: location.name })),
+          company: { name: job.company.name },
+        };
+      });
 
       setSearchJobs(jobData);
       console.log(`jobData:`, jobData)
@@ -99,18 +82,14 @@ const SearchJobs = () => {
     }
   };
 
-  // create function to handle saving a job to our database
   const handleSaveJob = async (jobId: string) => {
-    // find the job in `searchedjobs` state by the matching id
-
     const jobToSave: Job = searchJobs.find((job) => job.jobId === jobId)!;
 
     if (!jobToSave) {
-      console.error('Job not found in searchedJobs');
+      console.error('Job not found in searchJobs');
       return;
     }
-    
-    // get token
+
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -119,12 +98,10 @@ const SearchJobs = () => {
 
     try {
       await saveJob({ variables: { input: jobToSave } });
-
     } catch (err) {
       console.error(err);
     }
   };
-
 
   return (
     <>
@@ -157,7 +134,7 @@ const SearchJobs = () => {
         </Button>
 
         {/* Conditionally render the SaveJobForm */}
-        {/* {showJobForm && <SaveJobForm />} */}
+        {showJobForm && <SaveJobForm />}
 
         <Row>
           {/* Render searched job results here */}
