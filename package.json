@@ -18,7 +18,8 @@
     "@testing-library/react": "^16.1.0",
     "@types/jest": "^29.5.14",
     "@types/pretty": "^2.0.3",
-    "concurrently": "^8.2.0"
+    "concurrently": "^8.2.0",
+    "eslint": "^9.16.0"
   },
   "dependencies": {
     "apollo-server-express": "^3.13.0",
