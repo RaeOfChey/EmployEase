@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
       <div className="footer-content">
         <img src={logo} alt="logo" style={{ width: '100px', height: 'auto' }} />
         <p className="footer-text">
-          Content copyright &copy; {new Date().getFullYear()} by CodexX. All rights reserved.
+          Content copyright &copy; {new Date().getFullYear()} by EmployEase. All rights reserved.
         </p>
       </div>
     </footer>

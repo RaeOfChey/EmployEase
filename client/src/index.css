@@ -14,6 +14,10 @@
   --bs-nav-pills-link-active-bg: #4caf50;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 /* webkit solution */
 ::-webkit-input-placeholder {
   text-align: right;
@@ -79,6 +83,12 @@ main {
 /*----- Login / Signup box styles -----*/
 
 /* Active Login button */
+.modal-content {
+  padding: 15px;
+  border-radius: 5px;
+  border: none;
+}
+
 .nav-pills .nav-link.active[data-rr-ui-event-key="login"],
 .nav-pills .show > .nav-link[data-rr-ui-event-key="login"] {
   color: #fff;
@@ -88,7 +98,7 @@ main {
 
 /* Hover Login button (when not active) */
 .nav-pills .nav-link[data-rr-ui-event-key="login"]:not(.active):hover {
-  color: #a3cea4;
+  color: #45a049;
 }
 
 /* Active Sign Up button */
@@ -101,7 +111,7 @@ main {
 
 /* Hover Sign Up button (when not active) */
 .nav-pills .nav-link[data-rr-ui-event-key="signup"]:not(.active):hover {
-  color: #a3cea4;
+  color: #45a049;
 }
 
 .btn-success {
@@ -111,9 +121,9 @@ main {
 }
 
 .btn-success:hover {
-  color: #fff;
-  background-color: #a3cea4;
-  border: #a3cea4;
+  background-color: #45a049;
+  border-color: #45a049;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
 /*----- Navbar styles -----*/
@@ -340,6 +350,7 @@ button.dropdown-toggle:active {
 
 .save-job-form label {
   margin-bottom: 0.5rem;
+  font-size: 18px;
 }
 
 .save-job-form input,
@@ -350,7 +361,6 @@ button.dropdown-toggle:active {
   border-radius: 4px;
   border: 1px solid #ccc;
 }
-
 
 /* ----- Initial Job Cards that show up when user searches for job ----- */
 .search-page-header {
