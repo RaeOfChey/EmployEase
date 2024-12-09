@@ -19,23 +19,11 @@ const SearchJobs = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   const [saveJob] = useMutation(SAVE_JOB, {
-    update(cache, { data: { saveJob } }) {
-      try {
-        const { me }: any = cache.readQuery({ query: GET_ME });
-
-        cache.writeQuery({
-          query: GET_ME,
-          data: {
-            me: {
-              ...me,
-              savedJobs: [...me.savedJobs, saveJob],
-            },
-          },
-        });
-      } catch (err) {
-        console.error('Error updating cache:', err);
+    refetchQueries: [
+      {
+        query: GET_ME,
       }
-    },
+    ]
   });
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -47,6 +35,10 @@ const SearchJobs = () => {
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
+
+
+      // const data = await response.json();
+      // console.log('Full response data:', data);
 
       const { results } = await response.json();
 
@@ -70,14 +62,22 @@ const SearchJobs = () => {
     }
   };
 
-  const handleSaveJob = async (jobId: string) => {
+  // create function to handle saving a job to our database
+  const handleSaveJob = async (jobId: number) => {
+    // find the job in `searchedjobs` state by the matching id
+
     const jobToSave: Job = searchJobs.find((job) => job.jobId === jobId)!;
+    console.log(jobToSave);
+    console.log("jobId type:", typeof jobToSave.jobId);
+    console.log("jobToSave (before mutation):", JSON.stringify(jobToSave.jobId, null, 2));
+    console.log("Mutation variables:", { input: jobToSave });
 
     if (!jobToSave) {
       console.error('Job not found in searchJobs');
       return;
     }
 
+    // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -86,6 +86,8 @@ const SearchJobs = () => {
 
     try {
       await saveJob({ variables: { input: jobToSave } });
+      console.log(`this is after the save`, jobToSave)
+
     } catch (err) {
       console.error(err);
     }

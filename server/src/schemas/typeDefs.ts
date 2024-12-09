@@ -9,7 +9,7 @@ export const typeDefs = gql`
         login(username: String!, password: String!): Auth
         addUser(username: String!, password: String!): Auth
         saveJob(input: jobInput!): User
-        removeJob(jobId: String!): User
+        removeJob(jobId: Int!): User
     }
 
     type User {
@@ -20,7 +20,7 @@ export const typeDefs = gql`
     }
 
     type Job {
-        jobId: String
+        jobId: Int
         content: String
         jobTitle: String
         datePublished: String
@@ -68,7 +68,7 @@ export const typeDefs = gql`
     }
     
     input jobInput {
-        jobId: String
+        jobId: Int
         content: String
         jobTitle: String
         datePublished: String
