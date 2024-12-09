@@ -1,7 +1,7 @@
 import { Schema, type Document } from 'mongoose';
 
 interface JobDocument extends Document {
-  jobId: string;
+  jobId: number;
   content: string;
   jobTitle: string;
   datePublished: string;
@@ -13,7 +13,7 @@ interface JobDocument extends Document {
 
 const jobSchema = new Schema<JobDocument>({
   jobId: {
-    type: String,
+    type: Number,
     required: true,
   },
   content: {

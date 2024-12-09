@@ -20,7 +20,7 @@ interface AddUserArgs {
 
 interface SaveJobArgs {
   input: {
-    jobId: string;
+    jobId: number;
     content: string;
     jobTitle: string;
     datePublished: string;

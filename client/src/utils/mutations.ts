@@ -24,7 +24,7 @@ export const ADD_USER = gql`
 `;
 
 export const SAVE_JOB = gql`
-    mutation SaveJob($input: JobInput!) {
+    mutation SaveJob($input: jobInput!) {
         saveJob(input: $input) {
             savedJobs {
                 jobId
@@ -49,7 +49,7 @@ export const SAVE_JOB = gql`
 `;
 
 export const REMOVE_JOB = gql`
-    mutation RemoveJob($jobId: String!) {
+    mutation RemoveJob($jobId: Int!) {
         removeJob(jobId: $jobId) {
             savedJobs {
                 jobId
