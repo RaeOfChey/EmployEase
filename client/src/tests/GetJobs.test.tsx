@@ -32,18 +32,17 @@ describe('SearchResultCard', () => {
   it('should contain the expected text', () => {
     render(<SearchResultCard job={mockJob} />);
 
-    const itemElement = document.querySelector('h2');
+    const itemElement = document.querySelector('h3');
 
     if (itemElement) {
-      expect(itemElement.textContent).toBe('Simple Calculator');  
-    }
+      expect(itemElement.textContent).toBe('Tech Corp');   }
     
   });
 
   it('should match snapshot', () => {
     render(<SearchResultCard job={mockJob} />);
 
-    const cardElement = document.querySelector('.card'); 
+    const cardElement = document.querySelector('.search-result-card');
 
     if (cardElement) {
       expect(pretty(cardElement.innerHTML)).toMatchSnapshot();
