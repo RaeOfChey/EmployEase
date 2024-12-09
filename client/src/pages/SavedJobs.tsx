@@ -8,7 +8,7 @@ import type { Job } from '../models/Job';
 import { REMOVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
-import SaveJobForm from '../components/SaveJobForm';
+//import SaveJobForm from '../components/SaveJobForm';
 
   const SavedJobs = () => {
 
@@ -63,6 +63,31 @@ import SaveJobForm from '../components/SaveJobForm';
               }:`
             : 'You have no saved jobs. Search for jobs and save them to view later here.'}
         </h2>
+        <Row>
+          {userData?.savedJobs?.map((job: Job) => (
+            <Col key={job.jobId} md={4}>
+              <Card className='mb-4'>
+                <Card.Header>
+                  <Card.Title>{job.jobTitle}</Card.Title>
+                  <Card.Subtitle className='mb-2 text-muted'>{job.company?.name}</Card.Subtitle>
+                </Card.Header>
+                <Card.Body>
+                  <Card.Link href={job.refs?.landingPage} target='_blank' rel='noreferrer'>
+                    Job Posting
+                  </Card.Link>
+                </Card.Body>
+                <Card.Footer>
+                  <Button
+                    variant='danger'
+                    onClick={() => handleDeleteJob(job.jobId)}
+                  >
+                    Delete this job
+                  </Button>
+                </Card.Footer>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </Container>
     </>
   );
