@@ -19,6 +19,9 @@
     "concurrently": "^8.2.0"
   },
   "dependencies": {
-    "apollo-server-express": "^3.13.0"
+    "@testing-library/react": "^16.1.0",
+    "apollo-server-express": "^3.13.0",
+    "happy-dom": "^15.11.7",
+    "vitest": "^2.1.8"
   }
 }
