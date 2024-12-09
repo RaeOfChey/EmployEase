@@ -1,4 +1,4 @@
-export const  searchMuseJobs = async (location: string, industry: string, experience: string) => {
+export const  searchMuseJobs = async (location: string[], industry: string[], experience: string[]) => {
 
   if(location){
     
