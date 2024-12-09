@@ -16,7 +16,6 @@ describe('SearchResultCard', () => {
     levels: [
       {
         name: 'Mid-Level',
-        shortName: 'Mid',
       },
     ],
     locations: [
@@ -26,7 +25,6 @@ describe('SearchResultCard', () => {
     ],
     company: {
       name: 'Tech Corp',
-      website: 'https://techcorp.com',
     },
   };
 
