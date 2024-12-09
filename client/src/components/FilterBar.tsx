@@ -44,41 +44,81 @@ const FilterBar: React.FC<FilterBarProps> = ({
     ];
 
     const industryOptions = [
-        'Technology',
-        'Healthcare',
-        'Finance',
-        'Education',
-        'Retail',
-        'Manufacturing',
         'Construction',
-        'Real Estate',
-        'Marketing',
-        'Transportation',
-        'Hospitality',
-        'Government',
-        'Media',
-        'Telecommunications',
+        'Education',
         'Energy',
+        'Finance',
+        'Government',
+        'Healthcare',
+        'Hospitality',
+        'Manufacturing',
+        'Marketing',
+        'Media',
+        'Real Estate',
+        'Retail',
+        'Technology',
+        'Telecommunications',
+        'Transportation'
     ];
 
     const locationOptions = [
-        'New York, NY',
-        'Los Angeles, CA',
-        'Chicago, IL',
-        'Houston, TX',
-        'Phoenix, AZ',
-        'Philadelphia, PA',
-        'San Antonio, TX',
-        'San Diego, CA',
-        'Dallas, TX',
-        'San Jose, CA',
+        'Alabama, Birmingham',
+        `Alaska, Anchorage`,
+        `Arizona, Phoenix`,
+        `Arkansas, Little Rock`,
+        `California, Los Angeles`,
+        `Colorado, Denver`,
+        `Connecticut, Bridgeport`,
+        `Delaware, Wilmington`,
+        `Florida, Jacksonville`,
+        `Georgia, Atlanta`,
+        `Hawaii, Honolulu`,
+        `Idaho, Boise`,
+        `Illinois, Chicago`,
+        `Indiana, Indianapolis`,
+        `Iowa, Des Moines`,
+        `Kansas, Wichita`,
+        `Kentucky, Louisville`,
+        `Louisiana, New Orleans`,
+        `Maine, Portland`,
+        `Maryland, Baltimore`,
+        `Massachusetts, Boston`,
+        `Michigan, Detroit`,
+        `Minnesota, Minneapolis`,
+        `Mississippi, Jackson`,
+        `Missouri, Kansas City`,
+        `Montana, Billings`,
+        `Nebraska, Omaha`,
+        `Nevada, Las Vegas`,
+        `New Hampshire, Manchester`,
+        `New Jersey, Newark`,
+        `New Mexico, Albuquerque`,
+        `New York, New York City`,
+        `North Carolina, Charlotte`,
+        `North Dakota, Fargo`,
+        `Ohio, Columbus`,
+        `Oklahoma, Oklahoma City`,
+        `Oregon, Portland`,
+        `Pennsylvania, Philadelphia`,
+        `Rhode Island, Providence`,
+        `South Carolina, Charleston`,
+        `South Dakota, Sioux Falls`,
+        `Tennessee, Nashville`,
+        `Texas, Houston`,
+        `Utah, Salt Lake City`,
+        `Vermont, Burlington`,
+        `Virginia, Virginia Beach`,
+        `Washington, Seattle`,
+        `West Virginia, Charleston`,
+        `Wisconsin, Milwaukee`,
+        `Wyoming, Cheyenne`
     ];
 
     return (
         <Form className="filter-bar custom-filter-bar" onSubmit={handleFormSubmit}>
             <Row>
                 <Col md={3}>
-                <Form.Label>Location</Form.Label>
+                    <Form.Label>Location</Form.Label>
                     <DropdownButton title="Select location" className="custom-location">
                         {locationOptions.map((loc) => (
                             <Form.Check
@@ -96,7 +136,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 </Col>
 
                 <Col md={3}>
-                <Form.Label>Industry</Form.Label>
+                    <Form.Label>Industry</Form.Label>
                     <DropdownButton title="Select industry" className="custom-industry">
                         {industryOptions.map((ind) => (
                             <Form.Check
@@ -114,7 +154,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 </Col>
 
                 <Col md={3}>
-                <Form.Label>Experience Level</Form.Label>
+                    <Form.Label>Experience Level</Form.Label>
                     <DropdownButton title="Select experience level" className="custom-experience">
                         {experienceOptions.map((exp) => (
                             <Form.Check

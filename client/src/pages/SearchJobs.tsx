@@ -30,7 +30,7 @@ const SearchJobs = () => {
     event.preventDefault();
 
     try {
-      const response = await searchMuseJobs(location.join(', '), industry.join(', '), experience.join(', '));
+      const response = await searchMuseJobs(location, industry, experience);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
