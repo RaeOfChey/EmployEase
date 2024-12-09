@@ -75,6 +75,7 @@ const SearchJobs = () => {
       });
 
       setSearchJobs(jobData);
+      console.log(`jobData:`, jobData)
 
     } catch (err) {
       console.error(err);
@@ -137,19 +138,28 @@ const SearchJobs = () => {
 
         <Row>
           {/* Render searched job results here */}
-          {searchJobs.length ? (
-            searchJobs.map((job) => (
-              <Col key={job.jobId} md={4}>  {/* Adjust 'md' value as needed */}
-                <SearchResultCard job={job} onSave={handleSaveJob} />
+          {searchJobs.map((job) => {
+            return (
+              <Col key={job.jobId} md={4}>
+                <Card className="custom-job-card">
+                  <Card.Body>
+                    <Card.Title>{job.jobTitle}</Card.Title>
+                    <Card.Text>{job.content}</Card.Text>
+                    <Card.Text>Company: {job.company.name}</Card.Text>
+                    <Card.Text>Location: {job.locations.map(location => location.name).join(', ')}</Card.Text>
+                    <Card.Text>Experience Level: {job.levels.map(level => level.name).join(', ')}</Card.Text>
+                    <Card.Text>Published: {job.datePublished}</Card.Text>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleSaveJob(job.jobId)}
+                    >
+                      Save Job
+                    </Button>
+                  </Card.Body>
+                </Card>
               </Col>
-            ))
-          ) : (
-            <Col>
-              <Card className="text-center">
-                <Card.Body>No jobs found.</Card.Body>
-              </Card>
-            </Col>
-          )}
+            )
+          })}
         </Row>
       </Container>
     </>
