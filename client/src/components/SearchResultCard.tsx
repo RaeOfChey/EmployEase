@@ -41,7 +41,7 @@ const SearchJobs = () => {
     event.preventDefault();
 
     try {
-      const response = await searchMuseJobs(location.join(', '), industry.join(', '), experience.join(', '));
+      const response = await searchMuseJobs(location, industry, experience);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -70,7 +70,7 @@ const SearchJobs = () => {
   };
 
   const handleSaveJob = async (jobId: string) => {
-    const jobToSave: Job = searchJobs.find((job) => job.jobId === jobId)!;
+    const jobToSave: Job = searchJobs.find((job) => job.jobId === Number(jobId))!;
 
     if (!jobToSave) {
       console.error('Job not found in searchJobs');
@@ -125,7 +125,7 @@ const SearchJobs = () => {
                 <p>{job.locations.map((loc) => loc.name).join(', ')}</p>
                 <Button
                   variant="primary"
-                  onClick={() => handleSaveJob(job.jobId)}
+                  onClick={() => handleSaveJob(job.jobId.toString())}
                 >
                   Save Job
                 </Button>
@@ -159,7 +159,7 @@ const SearchJobs = () => {
             <p>Published: {selectedJob.datePublished}</p>
             <Button
               variant="primary"
-              onClick={() => handleSaveJob(selectedJob.jobId)}
+              onClick={() => handleSaveJob(selectedJob.jobId.toString())}
             >
               Save Job
             </Button>
