@@ -1,13 +1,5 @@
-import { useState } from 'react';
-import type { FormEvent } from 'react';
-import {
-  Card,
-  Container,
-  Col,
-  Button,
-  Row,
-} from 'react-bootstrap';
-
+import { useState, FormEvent } from 'react';
+import { Container, Col, Button, Row, Modal } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { searchMuseJobs } from '../../../server/src/routes/api/API';
 import type { Job } from '../models/Job';
@@ -16,17 +8,15 @@ import { SAVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
-import SearchResultCard from '../components/SearchResultCard';  // Ensure the path is correct
-
 import SaveJobForm from '../components/SaveJobForm';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
-
   const [location, setLocation] = useState<string[]>(['United States']);
   const [industry, setIndustry] = useState<string[]>(['IT']);
   const [experience, setExperience] = useState<string[]>(['Entry Level']);
   const [searchJobs, setSearchJobs] = useState<Job[]>([]);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   const [saveJob] = useMutation(SAVE_JOB, {
     update(cache, { data: { saveJob } }) {
@@ -52,7 +42,7 @@ const SearchJobs = () => {
     event.preventDefault();
 
     try {
-      const response = await searchMuseJobs(location, industry, experience);
+      const response = await searchMuseJobs(location.join(', '), industry.join(', '), experience.join(', '));
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -61,7 +51,6 @@ const SearchJobs = () => {
       const { results } = await response.json();
 
       const jobData: Job[] = results.map((job: MuseApiInfo) => {
-        console.log(job.contents);
         return {
           jobId: job.id,
           content: job.contents,
@@ -75,7 +64,6 @@ const SearchJobs = () => {
       });
 
       setSearchJobs(jobData);
-      console.log(`jobData:`, jobData)
 
     } catch (err) {
       console.error(err);
@@ -103,6 +91,14 @@ const SearchJobs = () => {
     }
   };
 
+  const handleJobClick = (job: Job) => {
+    setSelectedJob(job);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedJob(null);
+  };
+
   return (
     <>
       <div className="text-light">
@@ -118,52 +114,97 @@ const SearchJobs = () => {
           />
         </Container>
       </div>
-
+  
       <Container>
-        <h2 className='pt-5'>
+        {/* Header */}
+        <h2 className="search-page-header">
           {searchJobs.length
             ? `Viewing ${searchJobs.length} results:`
             : 'Job Results'}
         </h2>
+  
+        {/* Save Job Form Toggle Button */}
         <Button
-          variant="primary"
+          variant="success"
+          className="mb-4"
           onClick={() => setShowJobForm(!showJobForm)}
-          className="custom-toggle-button"
         >
-          {showJobForm ? 'Cancel' : 'Input a job'}
+          {showJobForm ? 'Cancel' : 'Add a Job'}
         </Button>
-
-        {/* Conditionally render the SaveJobForm */}
-        {showJobForm && <SaveJobForm />}
-
-        <Row>
-          {/* Render searched job results here */}
-          {searchJobs.map((job) => {
-            return (
-              <Col key={job.jobId} md={4}>
-                <Card className="custom-job-card">
-                  <Card.Body>
-                    <Card.Title>{job.jobTitle}</Card.Title>
-                    <Card.Text>{job.content}</Card.Text>
-                    <Card.Text>Company: {job.company.name}</Card.Text>
-                    <Card.Text>Location: {job.locations.map(location => location.name).join(', ')}</Card.Text>
-                    <Card.Text>Experience Level: {job.levels.map(level => level.name).join(', ')}</Card.Text>
-                    <Card.Text>Published: {job.datePublished}</Card.Text>
-                    <Button
-                      variant="primary"
-                      onClick={() => handleSaveJob(job.jobId)}
-                    >
-                      Save Job
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            )
-          })}
+  
+        {/* Conditionally render SaveJobForm */}
+        {showJobForm && (
+          <SaveJobForm
+            onSaveJob={(job) => {
+              console.log("Saved job:", job);
+              setShowJobForm(false); // Optionally close form after saving
+            }}
+          />
+        )}
+  
+        {/* Job Cards Container */}
+        <Row
+          id="job-cards-container"
+          className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 d-flex flex-wrap"
+        >
+          {searchJobs.map((job) => (
+            <Col md={4} sm={6} xs={12} key={job.jobId}>
+              <div className="job-card d-flex flex-column h-100">
+                <h3>{job.jobTitle}</h3>
+                <p>{job.company.name}</p>
+                <p>{job.locations.map((loc) => loc.name).join(', ')}</p>
+  
+                <div className="d-flex justify-content-between mt-auto">
+                  <Button
+                    id={`see-more-job-btn`}
+                    variant="secondary"
+                    onClick={() => handleJobClick(job)}
+                  >
+                    See More
+                  </Button>
+  
+                  <Button
+                    id={`save-job-btn`}
+                    variant="primary"
+                    onClick={() => handleSaveJob(job.jobId)}
+                  >
+                    Save Job
+                  </Button>
+                </div>
+              </div>
+            </Col>
+          ))}
         </Row>
       </Container>
+  
+      {/* Job Detail Modal */}
+      {selectedJob && (
+        <Modal show={Boolean(selectedJob)} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedJob.jobTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{selectedJob.content}</p>
+            <p>Company: {selectedJob.company.name}</p>
+            <p>
+              Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
+            </p>
+            <p>
+              Experience Level: {selectedJob.levels
+                .map((level) => level.name)
+                .join(', ')}
+            </p>
+            <p>Published: {selectedJob.datePublished}</p>
+            <Button
+              variant="primary"
+              onClick={() => handleSaveJob(selectedJob.jobId)}
+            >
+              Save Job
+            </Button>
+          </Modal.Body>
+        </Modal>
+      )}
     </>
-  );
-};
-
+  );  
+}
 export default SearchJobs;
