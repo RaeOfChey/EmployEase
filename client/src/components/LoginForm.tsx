@@ -86,7 +86,7 @@ const LoginForm = ({ }: { handleModalClose: () => void }) => {
       </Form>
       {data && (
         <div className="my-3 p-3 bg-success text-white">
-          Successfulyasdf asdfadsasd logged in.
+          Successfully logged in.
         </div>
       )}
       {error && (
