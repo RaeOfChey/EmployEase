@@ -12,9 +12,9 @@ import SaveJobForm from '../components/SaveJobForm';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
-  const [location, setLocation] = useState<string[]>(['United States']);
-  const [industry, setIndustry] = useState<string[]>(['IT']);
-  const [experience, setExperience] = useState<string[]>(['Entry Level']);
+  const [location, setLocation] = useState<string[]>(['']);
+  const [industry, setIndustry] = useState<string[]>(['']);
+  const [experience, setExperience] = useState<string[]>(['']);
   const [searchJobs, setSearchJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
@@ -29,8 +29,25 @@ const SearchJobs = () => {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const formatArrayForQuery = (array: string[], prefix: string) => {
+      return array
+        .filter((item) => item) // Ensure no empty strings
+        .map((item) => `${prefix}${encodeURIComponent(item)}`) // Prepend the prefix and encode
+        .join('&'); // Join with "&"
+    };
+  
+    // Format each array with the appropriate prefix
+    const locationParam = formatArrayForQuery(location, 'location=');
+    const industryParam = formatArrayForQuery(industry, 'category=');
+    const experienceParam = formatArrayForQuery(experience, 'level=');
+
     try {
-      const response = await searchMuseJobs(location, industry, experience);
+      const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam]);
+
+      const queryParams = [locationParam, industryParam, experienceParam]
+      .filter((param) => param) // Ensure no empty sections
+      .join('&'); // Join with "&"
+      console.log('Query Parameters:', queryParams);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
