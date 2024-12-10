@@ -9,6 +9,7 @@ import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 import SaveJobForm from '../components/SaveJobForm';
+import DOMPurify from 'dompurify';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
@@ -91,6 +92,15 @@ const SearchJobs = () => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
+    
+    const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
+    
+    return (
+      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+    );
   };
 
   const handleJobClick = (job: Job) => {
@@ -186,7 +196,7 @@ const SearchJobs = () => {
             <Modal.Title>{selectedJob.jobTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>{selectedJob.content}</p>
+            <SearchResultCard selectedJob={selectedJob} />
             <p>Company: {selectedJob.company.name}</p>
             <p>
               Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}

@@ -10,6 +10,7 @@ import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 
+
 const SearchJobs = () => {
   const [location, setLocation] = useState<string[]>(['United States']);
   const [industry, setIndustry] = useState<string[]>(['IT']);
@@ -68,6 +69,10 @@ const SearchJobs = () => {
       console.error(err);
     }
   };
+  
+  
+
+  
 
   const handleSaveJob = async (jobId: string) => {
     const jobToSave: Job = searchJobs.find((job) => job.jobId === Number(jobId))!;
@@ -142,14 +147,16 @@ const SearchJobs = () => {
       </Container>
 
       {/* Job Detail Modal */}
-      {selectedJob && (
+      {/* {selectedJob && (
         <Modal show={Boolean(selectedJob)} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>{selectedJob.jobTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>{selectedJob.content}</p>
-            <p>Company: {selectedJob.company.name}</p>
+            <div>
+            <SearchResultCard selectedJob={selectedJob} />
+            </div>
+            <p>test: {selectedJob.company.name}</p>
             <p>
               Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
             </p>
@@ -165,7 +172,7 @@ const SearchJobs = () => {
             </Button>
           </Modal.Body>
         </Modal>
-      )}
+      )} */}
     </>
   );
 };

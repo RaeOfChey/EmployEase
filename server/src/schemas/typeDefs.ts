@@ -10,6 +10,7 @@ export const typeDefs = gql`
         addUser(username: String!, password: String!): Auth
         saveJob(input: jobInput!): User
         removeJob(jobId: Int!): User
+        applyJob(jobId: Int!): User
     }
 
     type User {
@@ -28,6 +29,7 @@ export const typeDefs = gql`
         levels: [levels]
         locations: [locations]
         company: company
+        applied: Boolean
     }
 
     type refs {
