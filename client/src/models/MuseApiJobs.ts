@@ -8,8 +8,3 @@ export interface MuseApiInfo {
   locations: { name: string }[];
   company: { name: string };
 }
-
-// export interface MuseApiJob {
-//     id: string;
-//     jobInfo: MuseApiInfo;
-// }
