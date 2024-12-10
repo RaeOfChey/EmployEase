@@ -143,7 +143,11 @@ const SearchJobs = () => {
 
       {/* Job Detail Modal */}
       {selectedJob && (
-        <Modal show={Boolean(selectedJob)} onHide={handleCloseModal}>
+        <Modal
+        className="job-detail-modal"
+        show={Boolean(selectedJob)}
+        onHide={handleCloseModal}
+        >
           <Modal.Header closeButton>
             <Modal.Title>{selectedJob.jobTitle}</Modal.Title>
           </Modal.Header>
@@ -158,6 +162,7 @@ const SearchJobs = () => {
             </p>
             <p>Published: {selectedJob.datePublished}</p>
             <Button
+              className="btn-save-job"
               variant="primary"
               onClick={() => handleSaveJob(selectedJob.jobId.toString())}
             >
