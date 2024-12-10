@@ -57,3 +57,31 @@ export const REMOVE_JOB = gql`
         }
     }
 `;
+
+export const APPLY_JOB = gql`
+  mutation applyJob($jobId: Int!) {
+    applyJob(jobId: $jobId) {
+      _id
+      username
+      savedJobs {
+        jobId
+        jobTitle
+        content
+        datePublished
+        refs {
+          landingPage
+        }
+        levels {
+          name
+        }
+        locations {
+          name
+        }
+        company {
+          name
+        }
+        applied
+      }
+    }
+  }
+`;

@@ -9,6 +9,7 @@ import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 import SaveJobForm from '../components/SaveJobForm';
+import DOMPurify from 'dompurify';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
@@ -163,6 +164,15 @@ const SearchJobs = () => {
     }
   };
 
+  const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
+    
+    const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
+    
+    return (
+      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+    );
+  };
+
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
   };
@@ -220,6 +230,7 @@ const SearchJobs = () => {
         {/* Conditionally render SaveJobForm */}
         {showJobForm && (
           <SaveJobForm
+            handleModalClose={() => setShowJobForm(false)}
             onSaveJob={(job) => {
               console.log("Saved job:", job);
               setShowJobForm(false); // Optionally close form after saving
@@ -305,17 +316,10 @@ const SearchJobs = () => {
             >{selectedJob.jobTitle}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body
-            className="see-more-modal-body"
-          >
-            <p
-            className="see-more-modal-details"
-            >
-              Company: {selectedJob.company.name}
-              </p>
-            <p
-            className="see-more-modal-details"
-            >
+          <Modal.Body className="see-more-modal-body">
+            <SearchResultCard selectedJob={selectedJob} />
+            <p>Company: {selectedJob.company.name}</p>
+            <p>
               Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
             </p>
             <p

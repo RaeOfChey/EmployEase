@@ -7,4 +7,5 @@ export interface Job {
   levels: { name: string }[];
   locations: { name: string }[];
   company: { name: string };
+  applied?: boolean
 }

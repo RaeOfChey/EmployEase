@@ -23,6 +23,7 @@ export const GET_ME = gql`
                 company {
                     name
                 }
+                applied
             }
         }
     }`;
