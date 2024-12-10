@@ -46,23 +46,23 @@ import { GET_ME } from '../utils/queries';
 
   return (
     <>
-      <div className='text-light bg-dark p-5'>
+      <div className='text-light'>
         <Container>
           {userData?.username ? (
-            <h1>{userData?.username}, here are your saved jobs</h1>
+            <h2 className="filter-bar-header">{userData?.username}, here are your saved jobs</h2>
           ) : (
-            <h1>Saved jobs</h1>
+            <h2 className="filter-bar-header">Saved jobs</h2>
           )}
         </Container>
       </div>
       <Container>
-        <h2 className='pt-5'>
+        <p className="intro-text">  
           {userData?.savedJobs?.length
             ? `Viewing ${userData?.savedJobs?.length} saved ${
                 userData?.savedJobs?.length === 1 ? 'job' : 'jobs'
               }:`
             : 'You have no saved jobs. Search for jobs and save them to view later here.'}
-        </h2>
+        </p>
         <Row>
           {userData?.savedJobs?.map((job: Job) => (
             <Col key={job.jobId} md={4}>
@@ -72,8 +72,12 @@ import { GET_ME } from '../utils/queries';
                   <Card.Subtitle className='mb-2 text-muted'>{job.company?.name}</Card.Subtitle>
                 </Card.Header>
                 <Card.Body>
-                  <Card.Link href={job.refs?.landingPage} target='_blank' rel='noreferrer'>
-                    Job Posting
+                  <Card.Link
+                  href={job.refs?.landingPage}
+                  target='_blank'
+                  rel='noreferrer'
+                  >
+                    See job posting
                   </Card.Link>
                 </Card.Body>
                 <Card.Footer>

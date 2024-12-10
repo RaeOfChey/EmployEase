@@ -115,72 +115,73 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     return (
         <Form className="filter-bar custom-filter-bar" onSubmit={handleFormSubmit}>
-            <Row>
-                <Col md={3}>
-                    <Form.Label>Location</Form.Label>
-                    <DropdownButton title="Select location" className="custom-location">
-                        {locationOptions.map((loc) => (
-                            <Form.Check
-                                key={loc}
-                                type="checkbox"
-                                label={loc}
-                                value={loc}
-                                checked={location.includes(loc)}
-                                onChange={(e) =>
-                                    handleCheckboxChange(e, setLocation, location)
-                                }
-                            />
-                        ))}
-                    </DropdownButton>
-                </Col>
-
-                <Col md={3}>
-                    <Form.Label>Industry</Form.Label>
-                    <DropdownButton title="Select industry" className="custom-industry">
-                        {industryOptions.map((ind) => (
-                            <Form.Check
-                                key={ind}
-                                type="checkbox"
-                                label={ind}
-                                value={ind}
-                                checked={industry.includes(ind)}
-                                onChange={(e) =>
-                                    handleCheckboxChange(e, setIndustry, industry)
-                                }
-                            />
-                        ))}
-                    </DropdownButton>
-                </Col>
-
-                <Col md={3}>
-                    <Form.Label>Experience Level</Form.Label>
-                    <DropdownButton title="Select experience level" className="custom-experience">
-                        {experienceOptions.map((exp) => (
-                            <Form.Check
-                                key={exp}
-                                type="checkbox"
-                                label={exp}
-                                value={exp}
-                                checked={experience.includes(exp)}
-                                onChange={(e) =>
-                                    handleCheckboxChange(e, setExperience, experience)
-                                }
-                            />
-                        ))}
-                    </DropdownButton>
-                </Col>
-
-                <Col md={3} className="d-flex align-items-end">
-                    <Button
-                        variant="primary"
-                        type="submit"
-                        className="w-100 custom-search-btn"
-                    >
-                        Search
-                    </Button>
-                </Col>
-            </Row>
-        </Form>
+        <Row className="filter-bar-row">
+            <Col xs={12} md={3}>
+                <Form.Label>Location</Form.Label>
+                <DropdownButton title="Select location" className="custom-location">
+                    {locationOptions.map((loc) => (
+                        <Form.Check
+                            key={loc}
+                            type="checkbox"
+                            label={loc}
+                            value={loc}
+                            checked={location.includes(loc)}
+                            onChange={(e) =>
+                                handleCheckboxChange(e, setLocation, location)
+                            }
+                        />
+                    ))}
+                </DropdownButton>
+            </Col>
+    
+            <Col xs={12} md={3}>
+                <Form.Label>Industry</Form.Label>
+                <DropdownButton title="Select industry" className="custom-industry">
+                    {industryOptions.map((ind) => (
+                        <Form.Check
+                            key={ind}
+                            type="checkbox"
+                            label={ind}
+                            value={ind}
+                            checked={industry.includes(ind)}
+                            onChange={(e) =>
+                                handleCheckboxChange(e, setIndustry, industry)
+                            }
+                        />
+                    ))}
+                </DropdownButton>
+            </Col>
+    
+            <Col xs={12} md={3}>
+                <Form.Label>Experience Level</Form.Label>
+                <DropdownButton title="Select experience level" className="custom-experience">
+                    {experienceOptions.map((exp) => (
+                        <Form.Check
+                            key={exp}
+                            type="checkbox"
+                            label={exp}
+                            value={exp}
+                            checked={experience.includes(exp)}
+                            onChange={(e) =>
+                                handleCheckboxChange(e, setExperience, experience)
+                            }
+                        />
+                    ))}
+                </DropdownButton>
+            </Col>
+    
+            <Col xs={12} md={3} className="d-flex align-items-end">
+                <Button
+                    variant="primary"
+                    type="submit"
+                    className="w-100 custom-search-btn"
+                >
+                    Search
+                </Button>
+            </Col>
+        </Row>
+    </Form>
+    
     );
 };
 

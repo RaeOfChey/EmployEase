@@ -35,7 +35,7 @@ const SearchJobs = () => {
         .map((item) => `${prefix}${encodeURIComponent(item)}`) // Prepend the prefix and encode
         .join('&'); // Join with "&"
     };
-  
+
     // Format each array with the appropriate prefix
     const locationParam = formatArrayForQuery(location, 'location=');
     const industryParam = formatArrayForQuery(industry, 'category=');
@@ -45,8 +45,8 @@ const SearchJobs = () => {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam]);
 
       const queryParams = [locationParam, industryParam, experienceParam]
-      .filter((param) => param) // Ensure no empty sections
-      .join('&'); // Join with "&"
+        .filter((param) => param) // Ensure no empty sections
+        .join('&'); // Join with "&"
       console.log('Query Parameters:', queryParams);
 
       if (!response.ok) {
@@ -152,7 +152,7 @@ const SearchJobs = () => {
           <Col md={4} sm={6} xs={12}>
             <div className="save-job-form-container">
               <h3 className="add-job-header">Add a job</h3>
-              <p>Don’t see the job you’re looking for? Save job details to your Saved Applications and track your progress.</p>
+              <p>Can't find the job you're looking for? Fill out this form with the job details, add it to your Saved Jobs, and keep track of your application progress.</p>
 
               <Button
                 variant="success"
@@ -166,13 +166,12 @@ const SearchJobs = () => {
 
           {/* Conditionally render SaveJobForm */}
           {showJobForm && (
-            <Modal show={showJobForm}
+            <Modal
+              show={showJobForm}
               onHide={() => setShowJobForm(false)}
-              centered
               className="add-job-modal"
             >
-              <Modal.Header closeButton>
-              </Modal.Header>
+              <Modal.Header closeButton />
               <Modal.Body>
                 <SaveJobForm handleModalClose={() => setShowJobForm(false)} onSaveJob={handleSaveJob} />
               </Modal.Body>
@@ -225,17 +224,17 @@ const SearchJobs = () => {
             className="see-more-modal-body"
           >
             <p
-            className="see-more-modal-details"
+              className="see-more-modal-details"
             >
               Company: {selectedJob.company.name}
-              </p>
+            </p>
             <p
-            className="see-more-modal-details"
+              className="see-more-modal-details"
             >
               Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
             </p>
             <p
-            className="see-more-modal-details"
+              className="see-more-modal-details"
             >
               Experience Level: {selectedJob.levels
                 .map((level) => level.name)
@@ -243,12 +242,12 @@ const SearchJobs = () => {
             </p>
             <h2>Job Description:</h2>
             <p
-            className="see-more-modal-paragraph"
+              className="see-more-modal-paragraph"
             >
               {selectedJob.content}
             </p>
             <p
-            className="see-more-modal-details"
+              className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>
             <Button
               className="btn-save-job"
