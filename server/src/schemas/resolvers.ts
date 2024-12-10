@@ -89,6 +89,27 @@ export const resolvers = {
         throw new Error('Failed to save job');
       }
     },
+    applyJob: async (_: any, { jobId }: any, context: Context) => {
+      if (!context.user) {
+        throw new AuthenticationError('Not logged in');
+      }
+      try {
+        const updatedUser = await User.findByIdAndUpdate(
+          context.user.data._id,
+          { $set: { 'savedJobs.$[elem].applied': true } },
+          { arrayFilters: [{ 'elem.jobId': jobId }], new: true }
+        );
+
+        if (!updatedUser) {
+          throw new Error('Job update failed or user not found');
+        }
+
+        return updatedUser;
+      } catch (err) {
+        console.error('Error in applyJob resolver:', err);
+        throw new Error('Failed to apply for job');
+      }
+    },
     removeJob: async (_: any, { jobId }: any, context: Context) => {
       if (!context.user) {
         throw new AuthenticationError('Not logged in');

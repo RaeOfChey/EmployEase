@@ -23,6 +23,7 @@ const userSchema = new Schema<IUser>(
     },
     savedJobs: [jobSchema],
   },
+  
   // set this to use virtual below
   {
     toJSON: {

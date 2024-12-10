@@ -53,7 +53,7 @@ const LoginForm = ({ }: { handleModalClose: () => void }) => {
           Something went wrong with your login credentials!
         </Alert>
         <Form.Group className='mb-3'>
-          <Form.Label htmlFor='username'>username</Form.Label>
+          <Form.Label htmlFor='username'>Username</Form.Label>
           <Form.Control
             type='text'
             placeholder='Your username'
