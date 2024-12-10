@@ -46,7 +46,7 @@ const AppNavbar = () => {
                 to='/saved'
                 className={`nav-link custom-hover ${isActive('/saved')}`}
               >
-                Saved Applications
+                Saved Jobs
               </Nav.Link>
               {Auth.loggedIn() ? (
                 <Nav.Link

@@ -173,7 +173,7 @@ const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob, handleModalClose }
                         <option value="offer">Not Selected</option>
                     </select>
                 </div>
-                <button type="submit" className="btn-save-custom-job-button"
+                <button type="submit" className="btn custom-save-button"
                 >
                     Save Job
                 </button>
