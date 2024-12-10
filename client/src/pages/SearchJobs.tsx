@@ -66,6 +66,8 @@ const SearchJobs = () => {
   const handleSaveJob = async (jobId: number) => {
     // find the job in `searchedjobs` state by the matching id
 
+    console.log(`Saving job with ID: ${jobId}`);
+
     const jobToSave: Job = searchJobs.find((job) => job.jobId === jobId)!;
     console.log(jobToSave);
     console.log("jobId type:", typeof jobToSave.jobId);
@@ -105,6 +107,7 @@ const SearchJobs = () => {
     <>
       <div className="text-light">
         <Container>
+          <h2 className="filter-bar-header">Search for jobs</h2>
           <FilterBar
             location={location}
             setLocation={setLocation}
@@ -116,46 +119,57 @@ const SearchJobs = () => {
           />
         </Container>
       </div>
-  
+
       <Container>
         {/* Header */}
         <h2 className="search-page-header">
-          {searchJobs.length
-            ? `Viewing ${searchJobs.length} results:`
-            : 'Job Results'}
+          {searchJobs.length ? `Viewing all results:` : 'Job Results'}
         </h2>
-  
-        {/* Save Job Form Toggle Button */}
-        <Button
-          variant="success"
-          className="mb-4"
-          onClick={() => setShowJobForm(!showJobForm)}
-        >
-          {showJobForm ? 'Cancel' : 'Add a Job'}
-        </Button>
-  
-        {/* Conditionally render SaveJobForm */}
-        {showJobForm && (
-          <SaveJobForm
-            onSaveJob={(job) => {
-              console.log("Saved job:", job);
-              setShowJobForm(false); // Optionally close form after saving
-            }}
-          />
-        )}
-  
+
         {/* Job Cards Container */}
         <Row
           id="job-cards-container"
           className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 d-flex flex-wrap"
         >
+          {/* Add Job Button */}
+          <Col md={4} sm={6} xs={12}>
+            <div className="save-job-form-container">
+              <h3 className="add-job-header">Add a job</h3>
+              <p>Don’t see the job you’re looking for? Save job details to your Saved Applications and track your progress.</p>
+
+              <Button
+                variant="success"
+                className="mb-4-add-job"
+                onClick={() => setShowJobForm(!showJobForm)} // Toggle the modal visibility
+              >
+                {showJobForm ? 'Cancel' : 'Add a Job'}
+              </Button>
+            </div>
+          </Col>
+
+          {/* Conditionally render SaveJobForm */}
+          {showJobForm && (
+            <Modal show={showJobForm}
+              onHide={() => setShowJobForm(false)}
+              centered
+              className="add-job-modal"
+            >
+              <Modal.Header closeButton>
+              </Modal.Header>
+              <Modal.Body>
+                <SaveJobForm handleModalClose={() => setShowJobForm(false)} onSaveJob={handleSaveJob} />
+              </Modal.Body>
+            </Modal>
+          )}
+
+          {/* Job Cards */}
           {searchJobs.map((job) => (
             <Col md={4} sm={6} xs={12} key={job.jobId}>
               <div className="job-card d-flex flex-column h-100">
                 <h3>{job.jobTitle}</h3>
                 <p>{job.company.name}</p>
                 <p>{job.locations.map((loc) => loc.name).join(', ')}</p>
-  
+
                 <div className="d-flex justify-content-between mt-auto">
                   <Button
                     id={`see-more-job-btn`}
@@ -164,7 +178,7 @@ const SearchJobs = () => {
                   >
                     See More
                   </Button>
-  
+
                   <Button
                     id={`save-job-btn`}
                     variant="primary"
@@ -178,26 +192,49 @@ const SearchJobs = () => {
           ))}
         </Row>
       </Container>
-  
+
       {/* Job Detail Modal */}
       {selectedJob && (
-        <Modal show={Boolean(selectedJob)} onHide={handleCloseModal}>
+        <Modal
+          show={Boolean(selectedJob)}
+          onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>{selectedJob.jobTitle}</Modal.Title>
+            <Modal.Title
+              className="see-more-modal-header"
+            >{selectedJob.jobTitle}
+            </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <p>{selectedJob.content}</p>
-            <p>Company: {selectedJob.company.name}</p>
-            <p>
+          <Modal.Body
+            className="see-more-modal-body"
+          >
+            <p
+            className="see-more-modal-details"
+            >
+              Company: {selectedJob.company.name}
+              </p>
+            <p
+            className="see-more-modal-details"
+            >
               Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
             </p>
-            <p>
+            <p
+            className="see-more-modal-details"
+            >
               Experience Level: {selectedJob.levels
                 .map((level) => level.name)
                 .join(', ')}
             </p>
-            <p>Published: {selectedJob.datePublished}</p>
+            <h2>Job Description:</h2>
+            <p
+            className="see-more-modal-paragraph"
+            >
+              {selectedJob.content}
+            </p>
+            <p
+            className="see-more-modal-details"
+            >Published: {selectedJob.datePublished}</p>
             <Button
+              className="btn-save-job"
               variant="primary"
               onClick={() => handleSaveJob(selectedJob.jobId)}
             >
@@ -207,6 +244,6 @@ const SearchJobs = () => {
         </Modal>
       )}
     </>
-  );  
+  );
 }
 export default SearchJobs;
