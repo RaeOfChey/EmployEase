@@ -150,6 +150,36 @@ const SearchJobs = () => {
         >
           {showJobForm ? 'Cancel' : 'Add a Job'}
         </Button>
+<<<<<<< HEAD
+
+        {/* Conditionally render the SaveJobForm */}
+        {/* {showJobForm && <SaveJobForm />} */}
+
+        <Row>
+          {/* Render searched job results here */}
+          {searchJobs.map((job) => {
+            return (
+              <Col key={job.jobId} md={4}>
+                <Card className="custom-job-card">
+                  <Card.Body>
+                    <Card.Title>{job.jobTitle}</Card.Title>
+                    <Card.Text>{job.content}</Card.Text>
+                    <Card.Text>Company: {job.company.name}</Card.Text>
+                    <Card.Text>Location: {job.locations.map(location => location.name).join(', ')}</Card.Text>
+                    <Card.Text>Experience Level: {job.levels.map(level => level.name).join(', ')}</Card.Text>
+                    <Card.Text>Published: {job.datePublished}</Card.Text>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleSaveJob(job.jobId)}
+                    >
+                      Save Job
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            )
+          })}
+=======
   
         {/* Conditionally render SaveJobForm */}
         {showJobForm && (
@@ -193,6 +223,7 @@ const SearchJobs = () => {
               </div>
             </Col>
           ))}
+>>>>>>> develop
         </Row>
       </Container>
   

@@ -1,51 +1,31 @@
-import pretty from 'pretty';
-import { render } from '@testing-library/react';
-import SearchResultCard from '../components/SearchResultCard';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import SearchJobs from '../pages/SearchJobs';  // Adjust the path as needed
+import { MockedProvider } from '@apollo/client/testing';
+import '@testing-library/jest-dom';
 
-describe('SearchResultCard', () => {
+// Mock Auth utility
+jest.mock('../utils/auth', () => ({
+  loggedIn: jest.fn().mockReturnValue(true),
+  getToken: jest.fn().mockReturnValue('mock-token'),
+}));
 
-  const mockJob = {
-    jobId: '123',
-    content: 'This is a job description.',
-    jobTitle: 'Frontend Developer',
-    datePublished: '2024-06-01',
-    refs: {
-      // Assuming `Ref` has specific properties; add mock data accordingly
-      landingPage: 'https://example.com/job/123',
-    },
-    levels: [
-      {
-        name: 'Mid-Level',
-      },
-    ],
-    locations: [
-      {
-        name: 'Remote',
-      },
-    ],
-    company: {
-      name: 'Tech Corp',
-    },
-  };
+describe('SearchJobs Page', () => {
+  it('renders the SearchJobs page when navigating to /search-jobs', async () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <MemoryRouter initialEntries={['/search-jobs']}>
+          <Routes>
+            <Route path="/search-jobs" element={<SearchJobs />} />
+          </Routes>
+        </MemoryRouter>
+      </MockedProvider>
+    );
 
+    // Check for initial heading text
+    expect(await screen.findByText(/Job Results/i)).toBeInTheDocument();
 
-  it('should contain the expected text', () => {
-    render(<SearchResultCard job={mockJob} />);
-
-    const itemElement = document.querySelector('h3');
-
-    if (itemElement) {
-      expect(itemElement.textContent).toBe('Tech Corp');   }
-    
-  });
-
-  it('should match snapshot', () => {
-    render(<SearchResultCard job={mockJob} />);
-
-    const cardElement = document.querySelector('.search-result-card');
-
-    if (cardElement) {
-      expect(pretty(cardElement.innerHTML)).toMatchSnapshot();
-    }
+    // Check for button to input a job
+    expect(screen.getByRole('button', { name: /Input a job/i })).toBeInTheDocument();
   });
 });
