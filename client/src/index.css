@@ -14,6 +14,10 @@
   --bs-nav-pills-link-active-bg: #4caf50;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 /* webkit solution */
 ::-webkit-input-placeholder {
   text-align: right;
@@ -79,6 +83,12 @@ main {
 /*----- Login / Signup box styles -----*/
 
 /* Active Login button */
+.modal-content {
+  padding: 15px;
+  border-radius: 5px;
+  border: none;
+}
+
 .nav-pills .nav-link.active[data-rr-ui-event-key="login"],
 .nav-pills .show > .nav-link[data-rr-ui-event-key="login"] {
   color: #fff;
@@ -88,7 +98,7 @@ main {
 
 /* Hover Login button (when not active) */
 .nav-pills .nav-link[data-rr-ui-event-key="login"]:not(.active):hover {
-  color: #a3cea4;
+  color: #45a049;
 }
 
 /* Active Sign Up button */
@@ -101,7 +111,7 @@ main {
 
 /* Hover Sign Up button (when not active) */
 .nav-pills .nav-link[data-rr-ui-event-key="signup"]:not(.active):hover {
-  color: #a3cea4;
+  color: #45a049;
 }
 
 .btn-success {
@@ -111,9 +121,9 @@ main {
 }
 
 .btn-success:hover {
-  color: #fff;
-  background-color: #a3cea4;
-  border: #a3cea4;
+  background-color: #45a049;
+  border-color: #45a049;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
 /*----- Navbar styles -----*/
@@ -209,7 +219,7 @@ main {
   padding: 50px;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 5em 0em 2em 0em;
+  margin: 5em 0em 2.5em 0em;
 }
 
 /* Filter bar search button */
@@ -307,7 +317,7 @@ button.dropdown-toggle:active {
 }
 
 /* Cancel & Input a Job Buttons */
-.custom-toggle-button {
+.mb-4.btn.btn-success {
   background-color: #4caf50;
   border-color: #4caf50;
   transition: background-color 0.3s, border-color 0.3s;
@@ -324,7 +334,7 @@ button.dropdown-toggle:active {
   color: #fff;
 }
 
-.custom-toggle-button:hover,
+.mb-4.btn.btn-success:hover,
 .custom-save-button:hover {
   background-color: #45a049;
   border-color: #45a049;
@@ -340,6 +350,7 @@ button.dropdown-toggle:active {
 
 .save-job-form label {
   margin-bottom: 0.5rem;
+  font-size: 18px;
 }
 
 .save-job-form input,
@@ -349,6 +360,65 @@ button.dropdown-toggle:active {
   padding: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+/* ----- Initial Job Cards that show up when user searches for job ----- */
+.search-page-header {
+  margin: 2.5em 0em 0.75em 0em;
+}
+
+#see-more-job-btn {
+  background-color: #4caf50;
+  border: 1.5px solid #4caf50;
+  transition: background-color 0.3s, border-color 0.3s;
+  margin: 2.5em 0em 0em 0em;
+  color: #fff;
+}
+
+#see-more-job-btn:hover {
+  background-color: #45a049;
+  border-color: #45a049;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
+}
+
+#save-job-btn {
+  background-color: #fff;
+  border: 1.5px solid #4caf50;
+  transition: background-color 0.3s, border-color 0.3s;
+  margin: 2.5em 0em 0em 0em;
+  color: #4caf50;
+}
+
+#save-job-btn:hover {
+  background-color: #fff;
+  border-color: #45a049;
+  color: #45a049;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
+}
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+#job-cards-container {
+  margin-bottom: 20px;
+  padding-bottom: 100px;
+}
+
+.job-card h3 {
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.job-card p {
+  margin-bottom: 8px;
+  font-size: 16px;
 }
 
 /* ----- Footer styles ----- */

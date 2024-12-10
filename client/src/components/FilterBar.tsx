@@ -35,50 +35,89 @@ const FilterBar: React.FC<FilterBarProps> = ({
     };
 
     const experienceOptions = [
-        'Internship',
         'Entry Level',
-        'Associate',
-        'Mid-Senior Level',
-        'Director',
-        'Executive',
+        'Mid Level',
+        'Senior Level',
+        'management',
+        'Internship',
     ];
 
     const industryOptions = [
-        'Technology',
-        'Healthcare',
-        'Finance',
-        'Education',
-        'Retail',
-        'Manufacturing',
         'Construction',
-        'Real Estate',
+        'Education',
+        'Editor',
+        'Accounting and Finance',
+        'Law',
+        'Healthcare',
+        'Food and Hospitality Services',
+        'Manufacturing and Warehouse',
         'Marketing',
-        'Transportation',
-        'Hospitality',
-        'Government',
-        'Media',
-        'Telecommunications',
-        'Energy',
+        'Media, PR, and Communications',
+        'Real Estate',
+        'Retail',
+        'Software Engineering',
+        'IT',
+        'Transportation and Logistics'
     ];
 
     const locationOptions = [
-        'New York, NY',
-        'Los Angeles, CA',
-        'Chicago, IL',
-        'Houston, TX',
-        'Phoenix, AZ',
-        'Philadelphia, PA',
-        'San Antonio, TX',
-        'San Diego, CA',
-        'Dallas, TX',
-        'San Jose, CA',
-    ];
+    'Birmingham, AL',
+    'Anchorage, AK',
+    'Phoenix, AZ',
+    'Little Rock, AR',
+    'Los Angeles, CA',
+    'Denver, CO',
+    'Bridgeport, CT',
+    'Wilmington, DE',
+    'Jacksonville, FL',
+    'Atlanta, GA',
+    'Honolulu, HI',
+    'Boise, ID',
+    'Chicago, IL',
+    'Indianapolis, IN',
+    'Des Moines, IA',
+    'Wichita, KS',
+    'Louisville, KY',
+    'New Orleans, LA',
+    'Portland, ME',
+    'Baltimore, MD',
+    'Boston, MA',
+    'Detroit, MI',
+    'Minneapolis, MN',
+    'Jackson, MS',
+    'Kansas City, MO',
+    'Billings, MT',
+    'Omaha, NE',
+    'Las Vegas, NV',
+    'Manchester, NH',
+    'Newark, NJ',
+    'Albuquerque, NM',
+    'New York City, NY',
+    'Charlotte, NC',
+    'Fargo, ND',
+    'Columbus, OH',
+    'Oklahoma City, OK',
+    'Portland, OR',
+    'Philadelphia, PA',
+    'Providence, RI',
+    'Charleston, SC',
+    'Sioux Falls, SD',
+    'Nashville, TN',
+    'Houston, TX',
+    'Salt Lake City, UT',
+    'Burlington, VT',
+    'Virginia Beach, VA',
+    'Seattle, WA',
+    'Charleston, WV',
+    'Milwaukee, WI',
+    'Cheyenne, WY'
+];
 
     return (
         <Form className="filter-bar custom-filter-bar" onSubmit={handleFormSubmit}>
             <Row>
                 <Col md={3}>
-                <Form.Label>Location</Form.Label>
+                    <Form.Label>Location</Form.Label>
                     <DropdownButton title="Select location" className="custom-location">
                         {locationOptions.map((loc) => (
                             <Form.Check
@@ -96,7 +135,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 </Col>
 
                 <Col md={3}>
-                <Form.Label>Industry</Form.Label>
+                    <Form.Label>Industry</Form.Label>
                     <DropdownButton title="Select industry" className="custom-industry">
                         {industryOptions.map((ind) => (
                             <Form.Check
@@ -114,7 +153,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 </Col>
 
                 <Col md={3}>
-                <Form.Label>Experience Level</Form.Label>
+                    <Form.Label>Experience Level</Form.Label>
                     <DropdownButton title="Select experience level" className="custom-experience">
                         {experienceOptions.map((exp) => (
                             <Form.Check

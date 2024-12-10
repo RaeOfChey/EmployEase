@@ -1,5 +1,5 @@
 export interface Job {
-  jobId: string;
+  jobId: number;
   content: string;
   jobTitle: string;
   datePublished: string;

@@ -23,7 +23,7 @@ const Login = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    
+
     if(!loginData.password || !loginData.username){
       setError(`Password or user name was not entered`);
       return ;
