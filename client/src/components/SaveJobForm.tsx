@@ -2,60 +2,87 @@ import React, { useState } from 'react';
 
 // Define the structure of the job object
 interface Job {
-    title: string;
-    company: string;
-    location: string;
-    description: string;
-    publicationDate: string;
-    experienceLevel: string;
-    companyId: string;
-    referralLink: string;
+    jobTitle: string;
+    company: { name: string };
+    locations: { name: string }[];
+    content: string;
+    datePublished: string;
+    levels: { name: string }[];
+    jobId: number;
+    refs: { landingPage: string };
     priorityStatus: string;
 }
 
 interface SaveJobFormProps {
-    onSaveJob: (jobId: number) => void;
+    onSaveJob: (job: Job) => void;
     handleModalClose: () => void; // Add this prop
 }
 
 const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob, handleModalClose }) => {
     const [jobDetails, setJobDetails] = useState<Job>({
-        title: '',
-        company: '',
-        location: '',
-        description: '',
-        publicationDate: '',
-        experienceLevel: '',
-        companyId: '',
-        referralLink: '',
+        jobTitle: '',
+        company: { name: '' },
+        locations: [{ name: '' }],
+        content: '',
+        datePublished: '',
+        levels: [{ name: '' }],
+        jobId: 0,
+        refs: { landingPage: '' },
         priorityStatus: '',
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setJobDetails(prevState => ({
+    
+        if (name === 'levels') {
+          setJobDetails(prevState => ({
+            ...prevState,
+            levels: prevState.levels.map((level, index) =>
+              index === 0 ? { ...level, name: value } : level
+            ),
+          }));
+        } else if (name === 'company') {
+            setJobDetails(prevState => ({
+              ...prevState,
+              company: { ...prevState.company, name: value },
+            }));
+        } else if (name === 'locations') {
+          setJobDetails(prevState => ({
+            ...prevState,
+            locations: prevState.locations.map((location, index) =>
+              index === 0 ? { ...location, name: value } : location
+            ),
+          }));
+        } else if (name === 'refs') {
+          setJobDetails(prevState => ({
+            ...prevState,
+            refs: { ...prevState.refs, landingPage: value },
+          }));
+        } else {
+          setJobDetails(prevState => ({
             ...prevState,
             [name]: value,
-        }));
-    };
+          }));
+        }
+      };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const jobId = jobDetails.companyId;
+        const jobId = jobDetails.jobId;
         if (!jobId) {
             console.error("Job ID is missing. Cannot save job.");
             return;
         }
-        onSaveJob(Number(jobId));
+        onSaveJob(jobDetails);
         setJobDetails({
-            title: '',
-            company: '',
-            location: '',
-            description: '',
-            publicationDate: '',
-            experienceLevel: '',
-            companyId: '',
-            referralLink: '',
+            jobTitle: '',
+            company: { name: '' },
+            locations: [{ name: '' }],
+            content: '',
+            datePublished: '',
+            levels: [{ name: '' }],
+            jobId: 0,
+            refs: { landingPage: '' },
             priorityStatus: '',
         });
         handleModalClose();
@@ -65,12 +92,12 @@ const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob, handleModalClose }
         <div className="custom-form-box">
             <form onSubmit={handleSubmit} className="save-job-form">
                 <div>
-                    <label htmlFor="title">Job Title</label>
+                    <label htmlFor="jobTitle">Job Title</label>
                     <input
                         type="text"
-                        id="title"
-                        name="title"
-                        value={jobDetails.title}
+                        id="jobTitle"
+                        name="jobTitle"
+                        value={jobDetails.jobTitle}
                         onChange={handleInputChange}
                         required
                     />
@@ -81,49 +108,49 @@ const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob, handleModalClose }
                         type="text"
                         id="company"
                         name="company"
-                        value={jobDetails.company}
+                        value={jobDetails.company.name}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
                 <div>
-                    <label htmlFor="location">Job Location</label>
+                    <label htmlFor="locations">Job Location</label>
                     <input
                         type="text"
-                        id="location"
-                        name="location"
-                        value={jobDetails.location}
+                        id="locations"
+                        name="locations"
+                        value={jobDetails.locations[0].name}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
                 <div>
-                    <label htmlFor="description">Job Description</label>
+                    <label htmlFor="content">Job Description</label>
                     <textarea
-                        id="description"
-                        name="description"
-                        value={jobDetails.description}
+                        id="content"
+                        name="content"
+                        value={jobDetails.content}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
                 <div>
-                    <label htmlFor="publicationDate">Job Publication Date</label>
+                    <label htmlFor="datePublished">Job Publication Date</label>
                     <input
                         type="date"
-                        id="publicationDate"
-                        name="publicationDate"
-                        value={jobDetails.publicationDate}
+                        id="datePublished"
+                        name="datePublished"
+                        value={jobDetails.datePublished}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
                 <div>
-                    <label htmlFor="experienceLevel">Experience Level</label>
+                    <label htmlFor="levels">Experience Level</label>
                     <select
-                        id="experienceLevel"
-                        name="experienceLevel"
-                        value={jobDetails.experienceLevel}
+                        id="levels"
+                        name="levels"
+                        value={jobDetails.levels[0].name}
                         onChange={handleInputChange}
                         required
                     >
@@ -137,22 +164,22 @@ const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob, handleModalClose }
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="companyId">Company ID</label>
+                    <label htmlFor="jobId">Job ID: `must be unique`</label>
                     <input
                         type="text"
-                        id="companyId"
-                        name="companyId"
-                        value={jobDetails.companyId}
+                        id="jobId"
+                        name="jobId"
+                        value={jobDetails.jobId === 0 ? '' : jobDetails.jobId}
                         onChange={handleInputChange}
                     />
                 </div>
                 <div>
-                    <label htmlFor="referralLink">Referral Link</label>
+                    <label htmlFor="refs">Referral Link</label>
                     <input
                         type="url"
-                        id="referralLink"
-                        name="referralLink"
-                        value={jobDetails.referralLink}
+                        id="refs"
+                        name="refs"
+                        value={jobDetails.refs.landingPage}
                         onChange={handleInputChange}
                     />
                 </div>

@@ -126,13 +126,11 @@ const SearchJobs = () => {
   const handleSaveJob = async (jobId: number) => {
     // find the job in `searchedjobs` state by the matching id
 
-    console.log(`Saving job with ID: ${jobId}`);
+    
 
     const jobToSave: Job = searchJobs.find((job) => job.jobId === jobId)!;
-    console.log(jobToSave);
-    console.log("jobId type:", typeof jobToSave.jobId);
-    console.log("jobToSave (before mutation):", JSON.stringify(jobToSave.jobId, null, 2));
-    console.log("Mutation variables:", { input: jobToSave });
+    
+    
 
     if (!jobToSave) {
       console.error('Job not found in searchJobs');
@@ -148,12 +146,39 @@ const SearchJobs = () => {
 
     try {
       await saveJob({ variables: { input: jobToSave } });
-      console.log(`this is after the save`, jobToSave)
+      
 
     } catch (err) {
       console.error(err);
     }
   };
+
+  const handleCustomJob = async (jobDetails: Job) => {
+      const jobToSave: Job = {
+        jobId: Number(jobDetails.jobId),
+        content: jobDetails.content,
+        jobTitle: jobDetails.jobTitle,
+        datePublished: jobDetails.datePublished,
+        refs: { landingPage: jobDetails.refs.landingPage },
+        levels: jobDetails.levels.map((level) => ({ name: level.name })),
+        locations: jobDetails.locations.map((location) => ({ name: location.name })),
+        company: { name: jobDetails.company.name },
+      };
+      
+      const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      await saveJob({ variables: { input: jobToSave } });
+      
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
@@ -283,7 +308,7 @@ const SearchJobs = () => {
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <SaveJobForm handleModalClose={() => setShowJobForm(false)} onSaveJob={handleSaveJob} />
+                <SaveJobForm handleModalClose={() => setShowJobForm(false)} onSaveJob={handleCustomJob} />
               </Modal.Body>
             </Modal>
           )}
