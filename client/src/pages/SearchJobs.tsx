@@ -9,7 +9,7 @@ import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 import SaveJobForm from '../components/SaveJobForm';
-//import DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
@@ -163,6 +163,15 @@ const SearchJobs = () => {
     setSelectedJob(null);
   };
 
+  const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
+    
+    const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
+    
+    return (
+      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+    );
+  };
+
   return (
     <>
       <div className="text-light">
@@ -183,12 +192,13 @@ const SearchJobs = () => {
             className="remote-filter-button">
             {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
           </Button>
-          <Button
+          {Auth.loggedIn() ? (
+            <Button
             variant={hideSave ? 'danger' : 'primary'}
             onClick={() => setHideSave((prev) => !prev)}
             className="saved-filter-button">
             {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
-          </Button>
+          </Button>) : null}
         </Container>
       </div>
 
@@ -288,13 +298,13 @@ const SearchJobs = () => {
                   >
                     See More
                   </Button>
-                  <Button
+                  {Auth.loggedIn () ? (<Button
                     id={`save-job-btn`}
                     variant="primary"
                     onClick={() => handleSaveJob(job.jobId)}
                     disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId)}>
                     {savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId) ? 'Job Already Saved' : 'Save Job'}
-                  </Button>
+                  </Button>) : (<p> Please log in to save this job </p>)}
                 </div>
               </div>
             </Col>
@@ -334,16 +344,17 @@ const SearchJobs = () => {
                 .join(', ')}
             </p>
             <h2>Job Description:</h2>
+            <SearchResultCard selectedJob={selectedJob}/>
             <p
               className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>
-            <Button
-              className="btn-save-job"
-              variant="primary"
-              onClick={() => handleSaveJob(selectedJob.jobId)}
-            >
-              Save Job
-            </Button>
+              {Auth.loggedIn () ? (<Button
+                id={`save-job-btn`}
+                variant="primary"
+                onClick={() => handleSaveJob(selectedJob.jobId)}
+                disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId)}>
+                {savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId) ? 'Job Already Saved' : 'Save Job'}
+              </Button>) : (<p> Please log in to save this job </p>)}
           </Modal.Body>
         </Modal>
       )}
