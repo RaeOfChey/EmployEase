@@ -11,12 +11,12 @@ import { APPLY_JOB } from '../utils/mutations';
 
 //import SaveJobForm from '../components/SaveJobForm';
 
-  const SavedJobs = () => {
+const SavedJobs = () => {
 
 
   const { loading, data } = useQuery(GET_ME);
-  const [removeJob] = useMutation(REMOVE_JOB, {refetchQueries: [{ query: GET_ME }],});
-  const [applyJob] = useMutation(APPLY_JOB, {refetchQueries: [{ query: GET_ME }],})
+  const [removeJob] = useMutation(REMOVE_JOB, { refetchQueries: [{ query: GET_ME }], });
+  const [applyJob] = useMutation(APPLY_JOB, { refetchQueries: [{ query: GET_ME }], })
 
   const userData: User = data?.me || {};
 
@@ -30,7 +30,7 @@ import { APPLY_JOB } from '../utils/mutations';
     }
 
     try {
-      const response = await removeJob({ variables: { jobId }});
+      const response = await removeJob({ variables: { jobId } });
 
       if (!response) {
         throw new Error('something went wrong!');
@@ -58,7 +58,7 @@ import { APPLY_JOB } from '../utils/mutations';
       console.error("err: ", err);
     }
   };
-  
+
 
   //if data isn't here yet, say so
   if (loading) {
@@ -77,44 +77,45 @@ import { APPLY_JOB } from '../utils/mutations';
         </Container>
       </div>
       <Container>
-        <p className="intro-text">  
+        <p className="intro-text">
           {userData?.savedJobs?.length
-            ? `Viewing ${userData?.savedJobs?.length} saved ${
-                userData?.savedJobs?.length === 1 ? 'job' : 'jobs'
-              }:`
+            ? `Viewing ${userData?.savedJobs?.length} saved ${userData?.savedJobs?.length === 1 ? 'job' : 'jobs'
+            }:`
             : 'You have no saved jobs. Search for jobs and save them to view later here.'}
         </p>
-        <Row>
+        <Row id="job-cards-container"
+          className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 d-flex flex-wrap">
           {userData?.savedJobs?.map((job: Job) => (
             <Col key={job.jobId} md={4}>
               <Card className='mb-4' style={{ backgroundColor: job.applied ? 'lightgreen' : undefined }}>
-                <Card.Header>
+                <Card.Header style={{ backgroundColor: job.applied ? '#82d681' : undefined }}>
                   <Card.Title>{job.jobTitle}</Card.Title>
                   <Card.Subtitle className='mb-2 text-muted'>{job.company?.name}</Card.Subtitle>
                 </Card.Header>
-                <Card.Body>
+                <Card.Body style={{ backgroundColor: job.applied ? '#82d681' : undefined }}>
                   <Card.Link
-                  href={job.refs?.landingPage}
-                  target='_blank'
-                  rel='noreferrer'
+                    href={job.refs?.landingPage}
+                    target='_blank'
+                    rel='noreferrer'
                   >
                     See job posting
                   </Card.Link>
                 </Card.Body>
-                <Card.Footer>
+                <Card.Footer
+                  style={{ backgroundColor: job.applied ? '#82d681' : undefined }}
+                  className="d-flex justify-content-between"
+                >
                   <Button
-                    variant='danger'
+                    variant="success"
+                    onClick={() => handleJobApply(job.jobId)}
+                  >
+                    {job.applied ? 'Applied' : 'Apply'}
+                  </Button>
+                  <Button
+                    variant="danger"
                     onClick={() => handleDeleteJob(job.jobId)}
                   >
                     Delete this job
-                  </Button>
-                  <Button
-                    variant='success'
-                    className='float-end'
-                    onClick={() => handleJobApply(job.jobId)}
-                    
-                  >
-                    {job.applied ? 'Applied' : 'Apply'}
                   </Button>
                 </Card.Footer>
               </Card>
