@@ -164,9 +164,9 @@ const SearchJobs = () => {
   };
 
   const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
-    
+
     const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
-    
+
     return (
       <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
     );
@@ -192,12 +192,13 @@ const SearchJobs = () => {
             className="remote-filter-button">
             {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
           </Button>
-          <Button
-            variant={hideSave ? 'danger' : 'primary'}
-            onClick={() => setHideSave((prev) => !prev)}
-            className="saved-filter-button">
-            {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
-          </Button>
+          {Auth.loggedIn() ? (
+            <Button
+              variant={hideSave ? 'danger' : 'primary'}
+              onClick={() => setHideSave((prev) => !prev)}
+              className="saved-filter-button">
+              {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
+            </Button>) : null}
         </Container>
       </div>
 
@@ -274,7 +275,13 @@ const SearchJobs = () => {
               onHide={() => setShowJobForm(false)}
               className="add-job-modal"
             >
-              <Modal.Header closeButton />
+              <Modal.Header closeButton>
+                <Modal.Title
+                  className="see-more-modal-header"
+                >
+                  <h2>Add a Job</h2>
+                </Modal.Title>
+              </Modal.Header>
               <Modal.Body>
                 <SaveJobForm handleModalClose={() => setShowJobForm(false)} onSaveJob={handleSaveJob} />
               </Modal.Body>
@@ -297,13 +304,13 @@ const SearchJobs = () => {
                   >
                     See More
                   </Button>
-                  <Button
+                  {Auth.loggedIn() ? (<Button
                     id={`save-job-btn`}
                     variant="primary"
                     onClick={() => handleSaveJob(job.jobId)}
                     disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId)}>
                     {savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId) ? 'Job Already Saved' : 'Save Job'}
-                  </Button>
+                  </Button>) : (<p> Please log in to save this job </p>)}
                 </div>
               </div>
             </Col>
@@ -322,39 +329,38 @@ const SearchJobs = () => {
             >{selectedJob.jobTitle}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body
-            className="see-more-modal-body"
-          >
-            <p
-              className="see-more-modal-details"
-            >
-              Company: {selectedJob.company.name}
+
+          <Modal.Body className="see-more-modal-body">
+            <p className="see-more-modal-details">
+              <strong>Company:</strong> {selectedJob.company.name}
             </p>
-            <p
-              className="see-more-modal-details"
-            >
-              Location(s): {selectedJob.locations.map((loc) => loc.name).join(', ')}
+            <p className="see-more-modal-details">
+              <strong>Location(s):</strong> {selectedJob.locations.map((loc) => loc.name).join(', ')}
             </p>
-            <p
-              className="see-more-modal-details"
-            >
-              Experience Level: {selectedJob.levels
-                .map((level) => level.name)
-                .join(', ')}
+            <p className="see-more-modal-details">
+              <strong>Experience Level:</strong> {selectedJob.levels.map((level) => level.name).join(', ')}
             </p>
             <h2>Job Description:</h2>
-            <SearchResultCard selectedJob={selectedJob}/>
-            <p
-              className="see-more-modal-details"
-            >Published: {selectedJob.datePublished}</p>
+            <SearchResultCard selectedJob={selectedJob} />
+            <p className="see-more-modal-details">
+              <strong>Published:</strong> {selectedJob.datePublished}
+            </p>
+            {Auth.loggedIn() ? (
               <Button
                 id={`save-job-btn`}
                 variant="primary"
                 onClick={() => handleSaveJob(selectedJob.jobId)}
-                disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId)}>
-                {savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId) ? 'Job Already Saved' : 'Save Job'}
+                disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId)}
+              >
+                {savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId)
+                  ? 'Job Already Saved'
+                  : 'Save Job'}
               </Button>
+            ) : (
+              <p>Please log in to save this job</p>
+            )}
           </Modal.Body>
+
         </Modal>
       )}
     </>
