@@ -3,7 +3,7 @@ import { Container, Col, Button, Row, Modal } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { searchMuseJobs } from '../../../server/src/routes/api/API';
 import type { Job } from '../models/Job';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { SAVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
@@ -26,6 +26,10 @@ const SearchJobs = () => {
     experience: [''],
   });
   const [filterRemote, setFilterRemote] = useState<boolean>(false);
+  const [hideSave, setHideSave] = useState<boolean>(false);
+
+  const { data } = useQuery(GET_ME);
+  const savedJobs = data?.me?.savedJobs || [];
 
   const [saveJob] = useMutation(SAVE_JOB, {
     refetchQueries: [
@@ -35,12 +39,17 @@ const SearchJobs = () => {
     ]
   });
 
-  const filterJobResults = (results: MuseApiInfo[]): Job[] => {
+  // filter job results
+  const filterJobResults = (results: MuseApiInfo[], savedJobs: Job[]): Job[] => {
+    const savedJobIds = savedJobs.map((job) => job.jobId);
+
     return results.filter((job) => {
-        if (filterRemote) {
-          return !job.locations.some(location => location.name.includes('Remote'));
-        }
-        return true;}).map((job) => ({
+      // get two values of jobs we dont want
+      const remoteFilter = filterRemote && job.locations.some(locations => locations.name.includes('Remote'));
+      const savedFilter = hideSave && savedJobIds.includes(job.id);
+
+        // use two values to return the values we do want
+        return !(remoteFilter || savedFilter)}).map((job) => ({
         jobId: job.id,
         content: job.contents,
         jobTitle: job.name,
@@ -78,7 +87,7 @@ const SearchJobs = () => {
   
       const { results, page_count } = await response.json();
   
-      const jobData = filterJobResults(results);
+      const jobData = filterJobResults(results, savedJobs);
       setSearchJobs(jobData);
       setPageCount(page_count);
     } catch (err) {
@@ -105,7 +114,7 @@ const SearchJobs = () => {
       }
   
       const { results } = await response.json();
-      const jobData = filterJobResults(results);
+      const jobData = filterJobResults(results, savedJobs);
       setSearchJobs(jobData);
     } catch (err) {
       console.error(err);
@@ -172,6 +181,12 @@ const SearchJobs = () => {
             onClick={() => setFilterRemote((prev) => !prev)}
             className="mb-3">
           {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
+          </Button>
+          <Button
+            variant={hideSave ? 'danger' : 'primary'}
+            onClick={() => setHideSave((prev) => !prev)}
+            className="mb-3">
+          {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
           </Button>
         </Container>
       </div>
@@ -267,13 +282,12 @@ const SearchJobs = () => {
                   >
                     See More
                   </Button>
-
                   <Button
-                    id={`save-job-btn`}
-                    variant="primary"
-                    onClick={() => handleSaveJob(job.jobId)}
-                  >
-                    Save Job
+                  id={`save-job-btn`}
+                  variant="primary"
+                  onClick={() => handleSaveJob(job.jobId)}
+                  disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId)}>
+                  {savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId) ? 'Job Already Saved' : 'Save Job'}
                   </Button>
                 </div>
               </div>
@@ -314,7 +328,6 @@ const SearchJobs = () => {
                 .join(', ')}
             </p>
             <h2>Job Description:</h2>
-            <SearchResultCard selectedJob={selectedJob}/>
             <p
               className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>
