@@ -23,6 +23,7 @@
   "dependencies": {
     "@testing-library/react": "^16.1.0",
     "apollo-server-express": "^3.13.0",
+    "dompurify": "^3.2.3",
     "happy-dom": "^15.11.7",
     "vitest": "^2.1.8"
   }
