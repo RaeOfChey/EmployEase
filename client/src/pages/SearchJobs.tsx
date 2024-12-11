@@ -44,7 +44,7 @@ const SearchJobs = () => {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-  
+
     // Format each array with the appropriate prefix
     const locationParam = formatArrayForQuery(location, 'location=');
     const industryParam = formatArrayForQuery(industry, 'category=');
@@ -106,25 +106,25 @@ const SearchJobs = () => {
     try {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam], page);
 
-    if (!response.ok) {
-      throw new Error('something went wrong!');
-    }
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
 
-    const { results } = await response.json();
-    const jobData: Job[] = results.map((job: MuseApiInfo) => {
-      return {
-        jobId: job.id,
-        content: job.contents,
-        jobTitle: job.name,
-        datePublished: job.publication_date,
-        refs: { landingPage: job.refs.landing_page },
-        levels: job.levels.map(level => ({ name: level.name })),
-        locations: job.locations.map(location => ({ name: location.name })),
-        company: { name: job.company.name },
-      };
-    });
+      const { results } = await response.json();
+      const jobData: Job[] = results.map((job: MuseApiInfo) => {
+        return {
+          jobId: job.id,
+          content: job.contents,
+          jobTitle: job.name,
+          datePublished: job.publication_date,
+          refs: { landingPage: job.refs.landing_page },
+          levels: job.levels.map(level => ({ name: level.name })),
+          locations: job.locations.map(location => ({ name: location.name })),
+          company: { name: job.company.name },
+        };
+      });
 
-    setSearchJobs(jobData);
+      setSearchJobs(jobData);
 
     } catch (err) {
       console.error(err);
@@ -164,14 +164,14 @@ const SearchJobs = () => {
     }
   };
 
-  const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
-    
-    const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
-    
-    return (
-      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
-    );
-  };
+  // const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
+
+  //   const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
+
+  //   return (
+  //     <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+  //   );
+  // };
 
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
@@ -198,35 +198,31 @@ const SearchJobs = () => {
         </Container>
       </div>
 
-      <Container>
+      <Container className="pagecount-container">
         {/* Header */}
-        <h2 className="search-page-header">
-          {searchJobs.length
-            ? `Viewing ${searchJobs.length} results on page ${currentPage}:`
-            : 'No results found. please change your parameters and try again.'}
-        </h2>
-        {pageCount > 1?
-          <div>
-            <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-              Previous
-            </Button>
-            <span>
-              Page {currentPage} of {pageCount - 1}
-            </span>
-            <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === pageCount -1}>
-              Next
-            </Button>
-          </div>: null}
-  
-        {/* Save Job Form Toggle Button */}
-        <Button
-          variant="success"
-          className="mb-4"
-          onClick={() => setShowJobForm(!showJobForm)}
-        >
-          {showJobForm ? 'Cancel' : 'Add a Job'}
-        </Button>
-  
+        <div className="pagecount-counter">
+          <h2 className="pagecount-header">
+            {searchJobs.length
+              ? `Viewing ${searchJobs.length} results on page ${currentPage}:`
+              : 'No results found. Please change your job search parameters and try again.'}
+          </h2>
+          {pageCount > 1 ? (
+            <div className="pagination-controls">
+              <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                Previous
+              </Button>
+              <span>
+                Page {currentPage} of {pageCount - 1}
+              </span>
+              <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === pageCount - 1}>
+                Next
+              </Button>
+            </div>
+          ) : null}
+        </div>
+      </Container>
+
+      <Container>
         {/* Conditionally render SaveJobForm */}
         {showJobForm && (
           <SaveJobForm
@@ -237,7 +233,7 @@ const SearchJobs = () => {
             }}
           />
         )}
-  
+
         {/* Job Cards Container */}
         <Row
           id="job-cards-container"
@@ -326,7 +322,7 @@ const SearchJobs = () => {
             <p
               className="see-more-modal-details"
             >
-              Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
+              Location(s): {selectedJob.locations.map((loc) => loc.name).join(', ')}
             </p>
             <p
               className="see-more-modal-details"
