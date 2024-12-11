@@ -347,13 +347,13 @@ const SearchJobs = () => {
             <p
               className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>
-            <Button
-              className="btn-save-job"
-              variant="primary"
-              onClick={() => handleSaveJob(selectedJob.jobId)}
-            >
-              Save Job
-            </Button>
+              <Button
+                id={`save-job-btn`}
+                variant="primary"
+                onClick={() => handleSaveJob(selectedJob.jobId)}
+                disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId)}>
+                {savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId) ? 'Job Already Saved' : 'Save Job'}
+              </Button>
           </Modal.Body>
         </Modal>
       )}
