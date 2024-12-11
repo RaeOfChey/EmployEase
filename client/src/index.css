@@ -360,6 +360,8 @@ button.dropdown-toggle:active {
   padding: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
+  background-color: white;
+  color: black
 }
 
 /* ----- Initial Job Cards that show up when user searches for job ----- */
