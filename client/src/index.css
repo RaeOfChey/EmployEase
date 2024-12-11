@@ -70,7 +70,7 @@ main {
 
 /* Hover Login button (when not active) */
 .nav-pills .nav-link[data-rr-ui-event-key="login"]:not(.active):hover {
-  color: #45a049;
+  color: #317234;
 }
 
 /* Active Sign Up button */
@@ -83,7 +83,7 @@ main {
 
 /* Hover Sign Up button (when not active) */
 .nav-pills .nav-link[data-rr-ui-event-key="signup"]:not(.active):hover {
-  color: #45a049;
+  color: #317234;
 }
 
 .btn-success {
@@ -93,8 +93,8 @@ main {
 }
 
 .btn-success:hover {
-  background-color: #45a049;
-  border-color: #45a049;
+  background-color: #317234;
+  border-color: #317234;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
@@ -115,8 +115,8 @@ main {
 }
 
 .navbar-toggler:hover {
-  background-color: #45a049;
-  border: 1.2px solid #45a049;
+  background-color: #317234;
+  border: 1.2px solid #317234;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
@@ -194,6 +194,100 @@ main {
   transform-origin: bottom left;
 }
 
+/*----- General SearchJob Page styles -----*/
+.pagecount-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 0px 50px 0px;
+}
+
+.pagecount-header {
+  margin: 2.5em 0em .5em 0em;
+  font-size: 16px;
+  color: #000;
+  font-weight: 400;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Previous Button */
+.pagination-controls button:first-of-type {
+  background-color: #4caf50;
+  border-color: #4caf50;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.pagination-controls button:first-of-type:hover {
+  background-color: #317234;
+  border-color: #317234;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
+}
+
+/* Next Button */
+.pagination-controls button:last-of-type {
+  background-color: #4caf50;
+  border-color: #4caf50;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.pagination-controls button:last-of-type:hover {
+  background-color: #317234;
+  border-color: #317234;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
+}
+
+/* Disabled Button */
+.pagination-controls button:disabled {
+  background-color: #ecf0f1;
+  color: #6c757d;
+  cursor: not-allowed;
+  border: 1.5px solid #6c757d;
+}
+
+/* Enable Remote Filter Button */
+.remote-filter-button {
+  background-color: #4caf50;
+  border: 1.5px solid #4caf50;
+  transition: background-color 0.3s, border-color 0.3s;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.remote-filter-button:hover {
+  background-color: #317234;
+  border-color: #317234;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
+}
+
+.remote-filter-button:active {
+  background-color: #317234;
+  border-color: #317234;
+}
+
+.saved-filter-button {
+  background-color: #4caf50;
+  border: 1.5px solid #4caf50;
+  transition: background-color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+
+.saved-filter-button:hover {
+  background-color: #317234;
+  border: 1.5px solid #317234;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
+}
+
+.saved-filter-button:active {
+  background-color: #4caf50;
+  border: 1.5px solid #4caf50;
+}
+
+
 /*----- FilterBar styles -----*/
 
 /* Filter bar box */
@@ -218,8 +312,8 @@ button.custom-search-btn {
 }
 
 button.custom-search-btn:hover {
-  background-color: #45a049;
-  border-color: #45a049;
+  background-color: #317234;
+  border-color: #317234;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
@@ -336,8 +430,8 @@ button.dropdown-toggle:active {
 
 .mb-4.btn.btn-success:hover,
 .custom-save-button:hover {
-  background-color: #45a049;
-  border-color: #45a049;
+  background-color: #317234;
+  border-color: #317234;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
   color: #fff;
 }
@@ -365,12 +459,6 @@ button.dropdown-toggle:active {
 }
 
 /* ----- Initial Job Cards that show up when user searches for job ----- */
-.search-page-header {
-  margin: 2.5em 0em 1.75em 0em;
-  font-size: 16px;
-  color: #000;
-}
-
 #see-more-job-btn {
   background-color: #4caf50;
   border: 1.5px solid #4caf50;
@@ -380,8 +468,8 @@ button.dropdown-toggle:active {
 }
 
 #see-more-job-btn:hover {
-  background-color: #45a049;
-  border-color: #45a049;
+  background-color: #317234;
+  border-color: #317234;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
@@ -395,8 +483,8 @@ button.dropdown-toggle:active {
 
 #save-job-btn:hover {
   background-color: #fff;
-  border-color: #45a049;
-  color: #45a049;
+  border-color: #317234;
+  color: #317234;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
@@ -425,6 +513,7 @@ button.dropdown-toggle:active {
   margin-bottom: 8px;
   font-size: 16px;
   text-align: left;
+  font-weight: 500;
 }
 
 /* Modal */
@@ -435,8 +524,8 @@ button.dropdown-toggle:active {
 }
 
 .btn-save-job:hover {
-  background-color: #45a049;
-  border-color: #45a049;
+  background-color: #317234;
+  border-color: #317234;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
@@ -468,21 +557,14 @@ button.dropdown-toggle:active {
 
 /* ----- Saved Applications Page Styles ----- */
 .intro-text {
-  padding: 25px 0px;
+  margin: 2.5em 0em 2.5em 0em;
+  font-size: 16px;
+  color: #000;
 }
 
-.btn.btn-danger {
-  background-color: #fff;
-  border: 1.5px solid #4caf50;
-  transition: background-color 0.3s, border-color 0.3s;
-  color: #4caf50;
-}
-
-.btn.btn-danger:hover {
-  background-color: #fff;
-  border-color: #45a049;
-  color: #45a049;
-  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
+.card-body {
+  padding: 10px 0px 0px 0px;
+  text-align: left;
 }
 
 .mb-4.card {
@@ -503,26 +585,39 @@ button.dropdown-toggle:active {
   padding: 0px;
   background-color: #fff;
   color: #000;
+  border: none;
 }
 
 .text-muted {
   margin: 10px 0px;
   font-size: 16px;
+  color: #000 !important;
+  font-size: 16px;
+}
+
+a.card-link {
+  text-decoration: underline;
   text-align: left;
-  color: #000;
 }
 
 .mb-4.card .card-footer {
   background-color: #fff;
   border: none;
+  padding: 0px;
 }
 
-a.card-link {
-  text-decoration: underline;
+.btn.btn-danger {
+  background-color: #fff;
+  border: 1.5px solid #4caf50;
+  transition: background-color 0.3s, border-color 0.3s;
+  color: #4caf50;
 }
 
-.card-body {
-  padding: 10px 0px 0px 0px;
+.btn.btn-danger:hover {
+  background-color: #fff;
+  border-color: #317234;
+  color: #317234;
+  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
 /* ----- Footer styles ----- */

@@ -48,17 +48,18 @@ const SearchJobs = () => {
       const remoteFilter = filterRemote && job.locations.some(locations => locations.name.includes('Remote'));
       const savedFilter = hideSave && savedJobIds.includes(job.id);
 
-        // use two values to return the values we do want
-        return !(remoteFilter || savedFilter)}).map((job) => ({
-        jobId: job.id,
-        content: job.contents,
-        jobTitle: job.name,
-        datePublished: job.publication_date,
-        refs: { landingPage: job.refs.landing_page },
-        levels: job.levels.map(level => ({ name: level.name })),
-        locations: job.locations.map(location => ({ name: location.name })),
-        company: { name: job.company.name },
-      }));
+      // use two values to return the values we do want
+      return !(remoteFilter || savedFilter)
+    }).map((job) => ({
+      jobId: job.id,
+      content: job.contents,
+      jobTitle: job.name,
+      datePublished: job.publication_date,
+      refs: { landingPage: job.refs.landing_page },
+      levels: job.levels.map(level => ({ name: level.name })),
+      locations: job.locations.map(location => ({ name: location.name })),
+      company: { name: job.company.name },
+    }));
   };
 
   const formatArrayForQuery = (array: string[], prefix: string) => {
@@ -70,23 +71,23 @@ const SearchJobs = () => {
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
+
     const locationParam = formatArrayForQuery(location, 'location=');
     const industryParam = formatArrayForQuery(industry, 'category=');
     const experienceParam = formatArrayForQuery(experience, 'level=');
-  
+
     setCurrentPage(1);
     setRecentParams({ location, industry, experience });
-  
+
     try {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam], 1);
-  
+
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-  
+
       const { results, page_count } = await response.json();
-  
+
       const jobData = filterJobResults(results, savedJobs);
       setSearchJobs(jobData);
       setPageCount(page_count);
@@ -99,20 +100,20 @@ const SearchJobs = () => {
     if (page < 1 || page > pageCount) {
       return;
     }
-  
+
     setCurrentPage(page);
-  
+
     const locationParam = formatArrayForQuery(recentParams.location, 'location=');
     const industryParam = formatArrayForQuery(recentParams.industry, 'category=');
     const experienceParam = formatArrayForQuery(recentParams.experience, 'level=');
-  
+
     try {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam], page);
-  
+
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-  
+
       const { results } = await response.json();
       const jobData = filterJobResults(results, savedJobs);
       setSearchJobs(jobData);
@@ -179,40 +180,44 @@ const SearchJobs = () => {
           <Button
             variant={filterRemote ? 'danger' : 'primary'}
             onClick={() => setFilterRemote((prev) => !prev)}
-            className="mb-3">
-          {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
+            className="remote-filter-button">
+            {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
           </Button>
           <Button
             variant={hideSave ? 'danger' : 'primary'}
             onClick={() => setHideSave((prev) => !prev)}
-            className="mb-3">
-          {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
+            className="saved-filter-button">
+            {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
           </Button>
         </Container>
       </div>
 
-      <Container>
+      <Container className="pagecount-container">
         {/* Header */}
-        <h2 className="search-page-header">
-          {searchJobs.length
-            ? `Viewing ${searchJobs.length} results on page ${currentPage}:`
-            : 'No results found. please change your parameters and try again.'}
-        </h2>
-        {pageCount > 1?
-          <div>
-            <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-              Previous
-            </Button>
-            <span>
-              Page {currentPage} of {pageCount - 1}
-            </span>
-            <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === pageCount -1}>
-              Next
-            </Button>
-          </div>: null}
-  
-        {/* Save Job Form Toggle Button */}
-        {/* <Button
+        <div className="pagecount-counter">
+          <h2 className="pagecount-header">
+            {searchJobs.length
+              ? `Viewing ${searchJobs.length} results on page ${currentPage}:`
+              : 'No results found. Please change your job search parameters and try again.'}
+          </h2>
+          {pageCount > 1 ? (
+            <div className="pagination-controls">
+              <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                Previous
+              </Button>
+              <span>
+                Page {currentPage} of {pageCount - 1}
+              </span>
+              <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === pageCount - 1}>
+                Next
+              </Button>
+            </div>
+          ) : null}
+        </div>
+      </Container>
+
+      {/* Save Job Form Toggle Button */}
+      {/* <Button
           variant="success"
           className="mb-4"
           onClick={() => setShowJobForm(!showJobForm)}
@@ -220,8 +225,8 @@ const SearchJobs = () => {
           {showJobForm ? 'Cancel' : 'Add a Job'}
         </Button> */}
 
-        {/* Conditionally render SaveJobForm */}
-        {/* {showJobForm && (
+      {/* Conditionally render SaveJobForm */}
+      {/* {showJobForm && (
           <SaveJobForm
             handleModalClose={() => setShowJobForm(false)}
             onSaveJob={(job) => {
@@ -230,8 +235,9 @@ const SearchJobs = () => {
             }}
           />
         )} */}
-  
-        {/* Job Cards Container */}
+
+      {/* Job Cards Container */}
+      <Container>
         <Row
           id="job-cards-container"
           className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 d-flex flex-wrap"
@@ -283,11 +289,11 @@ const SearchJobs = () => {
                     See More
                   </Button>
                   <Button
-                  id={`save-job-btn`}
-                  variant="primary"
-                  onClick={() => handleSaveJob(job.jobId)}
-                  disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId)}>
-                  {savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId) ? 'Job Already Saved' : 'Save Job'}
+                    id={`save-job-btn`}
+                    variant="primary"
+                    onClick={() => handleSaveJob(job.jobId)}
+                    disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId)}>
+                    {savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId) ? 'Job Already Saved' : 'Save Job'}
                   </Button>
                 </div>
               </div>
@@ -318,7 +324,7 @@ const SearchJobs = () => {
             <p
               className="see-more-modal-details"
             >
-              Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
+              Location(s): {selectedJob.locations.map((loc) => loc.name).join(', ')}
             </p>
             <p
               className="see-more-modal-details"
