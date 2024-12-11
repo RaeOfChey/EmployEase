@@ -9,7 +9,7 @@ import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 import SaveJobForm from '../components/SaveJobForm';
-//import DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
@@ -161,6 +161,15 @@ const SearchJobs = () => {
 
   const handleCloseModal = () => {
     setSelectedJob(null);
+  };
+
+  const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
+    
+    const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
+    
+    return (
+      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+    );
   };
 
   return (
@@ -334,6 +343,7 @@ const SearchJobs = () => {
                 .join(', ')}
             </p>
             <h2>Job Description:</h2>
+            <SearchResultCard selectedJob={selectedJob}/>
             <p
               className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>
