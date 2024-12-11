@@ -25,6 +25,7 @@ const SearchJobs = () => {
     industry: [''],
     experience: [''],
   });
+  const [filterRemote, setFilterRemote] = useState<boolean>(false);
 
   const [saveJob] = useMutation(SAVE_JOB, {
     refetchQueries: [
@@ -33,6 +34,23 @@ const SearchJobs = () => {
       }
     ]
   });
+
+  const filterJobResults = (results: MuseApiInfo[]): Job[] => {
+    return results.filter((job) => {
+        if (filterRemote) {
+          return !job.locations.some(location => location.name.includes('Remote'));
+        }
+        return true;}).map((job) => ({
+        jobId: job.id,
+        content: job.contents,
+        jobTitle: job.name,
+        datePublished: job.publication_date,
+        refs: { landingPage: job.refs.landing_page },
+        levels: job.levels.map(level => ({ name: level.name })),
+        locations: job.locations.map(location => ({ name: location.name })),
+        company: { name: job.company.name },
+      }));
+  };
 
   const formatArrayForQuery = (array: string[], prefix: string) => {
     return array
@@ -43,50 +61,26 @@ const SearchJobs = () => {
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
   
-    // Format each array with the appropriate prefix
     const locationParam = formatArrayForQuery(location, 'location=');
     const industryParam = formatArrayForQuery(industry, 'category=');
     const experienceParam = formatArrayForQuery(experience, 'level=');
-
+  
     setCurrentPage(1);
     setRecentParams({ location, industry, experience });
-
+  
     try {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam], 1);
-
-      const queryParams = [locationParam, industryParam, experienceParam]
-        .filter((param) => param) // Ensure no empty sections
-        .join('&'); // Join with "&"
-      console.log('Query Parameters:', queryParams);
-
+  
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-
-
-      // const data = await response.json();
-      // console.log('Full response data:', data);
-
+  
       const { results, page_count } = await response.json();
-
-      const jobData: Job[] = results.map((job: MuseApiInfo) => {
-        return {
-          jobId: job.id,
-          content: job.contents,
-          jobTitle: job.name,
-          datePublished: job.publication_date,
-          refs: { landingPage: job.refs.landing_page },
-          levels: job.levels.map(level => ({ name: level.name })),
-          locations: job.locations.map(location => ({ name: location.name })),
-          company: { name: job.company.name },
-        };
-      });
-
+  
+      const jobData = filterJobResults(results);
       setSearchJobs(jobData);
       setPageCount(page_count);
-
     } catch (err) {
       console.error(err);
     }
@@ -96,40 +90,27 @@ const SearchJobs = () => {
     if (page < 1 || page > pageCount) {
       return;
     }
-
+  
     setCurrentPage(page);
-
+  
     const locationParam = formatArrayForQuery(recentParams.location, 'location=');
     const industryParam = formatArrayForQuery(recentParams.industry, 'category=');
     const experienceParam = formatArrayForQuery(recentParams.experience, 'level=');
-
+  
     try {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam], page);
-
-    if (!response.ok) {
-      throw new Error('something went wrong!');
-    }
-
-    const { results } = await response.json();
-    const jobData: Job[] = results.map((job: MuseApiInfo) => {
-      return {
-        jobId: job.id,
-        content: job.contents,
-        jobTitle: job.name,
-        datePublished: job.publication_date,
-        refs: { landingPage: job.refs.landing_page },
-        levels: job.levels.map(level => ({ name: level.name })),
-        locations: job.locations.map(location => ({ name: location.name })),
-        company: { name: job.company.name },
-      };
-    });
-
-    setSearchJobs(jobData);
-
+  
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
+  
+      const { results } = await response.json();
+      const jobData = filterJobResults(results);
+      setSearchJobs(jobData);
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   // create function to handle saving a job to our database
   const handleSaveJob = async (jobId: number) => {
@@ -164,15 +145,6 @@ const SearchJobs = () => {
     }
   };
 
-  // const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
-    
-  //   const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
-    
-  //   return (
-  //     <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
-  //   );
-  // };
-
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
   };
@@ -195,6 +167,12 @@ const SearchJobs = () => {
             setExperience={setExperience}
             handleFormSubmit={handleFormSubmit}
           />
+          <Button
+            variant={filterRemote ? 'danger' : 'primary'}
+            onClick={() => setFilterRemote((prev) => !prev)}
+            className="mb-3">
+          {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
+          </Button>
         </Container>
       </div>
 
