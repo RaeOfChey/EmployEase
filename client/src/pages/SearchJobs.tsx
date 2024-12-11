@@ -192,12 +192,13 @@ const SearchJobs = () => {
             className="remote-filter-button">
             {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
           </Button>
-          <Button
+          {Auth.loggedIn() ? (
+            <Button
             variant={hideSave ? 'danger' : 'primary'}
             onClick={() => setHideSave((prev) => !prev)}
             className="saved-filter-button">
             {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
-          </Button>
+          </Button>) : null}
         </Container>
       </div>
 
@@ -297,13 +298,13 @@ const SearchJobs = () => {
                   >
                     See More
                   </Button>
-                  <Button
+                  {Auth.loggedIn () ? (<Button
                     id={`save-job-btn`}
                     variant="primary"
                     onClick={() => handleSaveJob(job.jobId)}
                     disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId)}>
                     {savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId) ? 'Job Already Saved' : 'Save Job'}
-                  </Button>
+                  </Button>) : (<p> Please log in to save this job </p>)}
                 </div>
               </div>
             </Col>
@@ -347,13 +348,13 @@ const SearchJobs = () => {
             <p
               className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>
-              <Button
+              {Auth.loggedIn () ? (<Button
                 id={`save-job-btn`}
                 variant="primary"
                 onClick={() => handleSaveJob(selectedJob.jobId)}
                 disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId)}>
                 {savedJobs.some((savedJob: Job) => savedJob.jobId === selectedJob.jobId) ? 'Job Already Saved' : 'Save Job'}
-              </Button>
+              </Button>) : (<p> Please log in to save this job </p>)}
           </Modal.Body>
         </Modal>
       )}
