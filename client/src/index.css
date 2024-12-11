@@ -30,8 +30,20 @@ input:-moz-placeholder {
 
 a {
   font-weight: 500;
-  color: #000000;
+  color: #000;
   text-decoration: inherit;
+}
+
+li,
+span {
+  color: #000;
+}
+
+p,
+strong,
+b {
+  color: #000;
+  margin: 10px 0px 0px 0px;
 }
 
 body {
@@ -56,6 +68,34 @@ main {
   min-height: 100vh;
   display: flex;
   flex-direction: row;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+}
+
+.see-more-modal-header {
+  flex-grow: 1;
+}
+
+.modal-header .btn-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: 10px;
+  background-color: #4caf50;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.modal-header .btn-close:hover {
+  background-color: #317234;
+  cursor: pointer;
 }
 
 /*----- Login / Signup box styles -----*/
@@ -89,7 +129,7 @@ main {
 .btn-success {
   color: #fff;
   background-color: #4caf50;
-  border: #4caf50;
+  border-color: #4caf50;
 }
 
 .btn-success:hover {
@@ -208,7 +248,7 @@ main {
 }
 
 .pagecount-header {
-  margin: 2.5em 0em .5em 0em;
+  margin: 2.5em 0em 0.5em 0em;
   font-size: 16px;
   color: #000;
   font-weight: 400;
@@ -291,7 +331,6 @@ main {
   background-color: #4caf50;
   border: 1.5px solid #4caf50;
 }
-
 
 /*----- FilterBar styles -----*/
 
@@ -403,6 +442,12 @@ button.dropdown-toggle:active {
   color: #000;
 }
 
+.add-job-modal .see-more-modal-header h2 {
+  margin: 10px 0px;
+  font-size: 2rem;
+  color: #000;
+}
+
 .mb-4-add-job {
   background-color: #4caf50;
   border: 1.5px solid #4caf50;
@@ -450,6 +495,7 @@ button.dropdown-toggle:active {
 .save-job-form label {
   margin-bottom: 0.5rem;
   font-size: 18px;
+  color: #000;
 }
 
 .save-job-form input,
@@ -460,7 +506,7 @@ button.dropdown-toggle:active {
   border-radius: 4px;
   border: 1px solid #ccc;
   background-color: white;
-  color: black
+  color: black;
 }
 
 /* ----- Initial Job Cards that show up when user searches for job ----- */
@@ -487,9 +533,9 @@ button.dropdown-toggle:active {
 }
 
 #save-job-btn:hover {
-  background-color: #fff;
+  background-color: #317234;
   border-color: #317234;
-  color: #317234;
+  color: #fff;
   box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
 }
 
@@ -542,22 +588,25 @@ button.dropdown-toggle:active {
 .modal .see-more-modal-header.modal-title.h4 {
   margin: 10px 0px;
   font-size: 2rem;
+  color: #000;
 }
 
 .modal h2 {
-  margin: 20px 0px 10px 0px;
+  margin: 25px 0px 10px 0px;
   font-size: 22px;
+  color: #000;
 }
 
 .see-more-modal-body.modal-body {
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   font-size: 16px;
+  color: #000;
 }
 
 .see-more-modal-details {
   font-size: 16px;
   color: #000;
-  font-weight: 500;
+  margin-bottom: 0px;
 }
 
 /* ----- Saved Applications Page Styles ----- */
@@ -698,8 +747,15 @@ a.card-link {
   .d-flex.justify-content-between {
     flex-direction: column;
   }
-  #see-more-job-btn, #save-job-btn {
+  #see-more-job-btn,
+  #save-job-btn {
     width: 100%;
+  }
+  #job-status-dropdown {
+    margin-bottom: 10px;
+  }
+  .form-check {
+    margin-bottom: 0px;
   }
 }
 
