@@ -9,7 +9,7 @@ import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 import SaveJobForm from '../components/SaveJobForm';
-import DOMPurify from 'dompurify';
+//import DOMPurify from 'dompurify';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
@@ -164,14 +164,14 @@ const SearchJobs = () => {
     }
   };
 
-  const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
+  // const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
     
-    const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
+  //   const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
     
-    return (
-      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
-    );
-  };
+  //   return (
+  //     <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+  //   );
+  // };
 
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
