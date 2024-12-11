@@ -219,16 +219,16 @@ const SearchJobs = () => {
           </div>: null}
   
         {/* Save Job Form Toggle Button */}
-        <Button
+        {/* <Button
           variant="success"
           className="mb-4"
           onClick={() => setShowJobForm(!showJobForm)}
         >
           {showJobForm ? 'Cancel' : 'Add a Job'}
-        </Button>
+        </Button> */}
 
         {/* Conditionally render SaveJobForm */}
-        {showJobForm && (
+        {/* {showJobForm && (
           <SaveJobForm
             handleModalClose={() => setShowJobForm(false)}
             onSaveJob={(job) => {
@@ -236,7 +236,7 @@ const SearchJobs = () => {
               setShowJobForm(false); // Optionally close form after saving
             }}
           />
-        )}
+        )} */}
   
         {/* Job Cards Container */}
         <Row
@@ -336,11 +336,7 @@ const SearchJobs = () => {
                 .join(', ')}
             </p>
             <h2>Job Description:</h2>
-            <p
-              className="see-more-modal-paragraph"
-            >
-              {selectedJob.content}
-            </p>
+            <SearchResultCard selectedJob={selectedJob}/>
             <p
               className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>

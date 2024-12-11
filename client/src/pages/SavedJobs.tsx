@@ -84,15 +84,16 @@ import { APPLY_JOB } from '../utils/mutations';
               }:`
             : 'You have no saved jobs. Search for jobs and save them to view later here.'}
         </p>
-        <Row>
+        <Row id="job-cards-container"
+          className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 d-flex flex-wrap">
           {userData?.savedJobs?.map((job: Job) => (
             <Col key={job.jobId} md={4}>
               <Card className='mb-4' style={{ backgroundColor: job.applied ? 'lightgreen' : undefined }}>
-                <Card.Header>
+                <Card.Header style={{ backgroundColor: job.applied ? '#82d681' : undefined }}>
                   <Card.Title>{job.jobTitle}</Card.Title>
                   <Card.Subtitle className='mb-2 text-muted'>{job.company?.name}</Card.Subtitle>
                 </Card.Header>
-                <Card.Body>
+                <Card.Body style={{ backgroundColor: job.applied ? '#82d681' : undefined }}>
                   <Card.Link
                   href={job.refs?.landingPage}
                   target='_blank'
@@ -101,7 +102,7 @@ import { APPLY_JOB } from '../utils/mutations';
                     See job posting
                   </Card.Link>
                 </Card.Body>
-                <Card.Footer>
+                <Card.Footer style={{ backgroundColor: job.applied ? '#82d681' : undefined }}>
                   <Button
                     variant='danger'
                     onClick={() => handleDeleteJob(job.jobId)}
