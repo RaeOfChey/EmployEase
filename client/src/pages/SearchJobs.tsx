@@ -226,7 +226,7 @@ const SearchJobs = () => {
         >
           {showJobForm ? 'Cancel' : 'Add a Job'}
         </Button>
-  
+
         {/* Conditionally render SaveJobForm */}
         {showJobForm && (
           <SaveJobForm

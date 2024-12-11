@@ -10,7 +10,6 @@
 // import FilterBar from '../components/FilterBar';
 // import { MuseApiInfo } from '../models/MuseApiJobs';
 
-
 // const SearchJobs = () => {
 //   const [location, setLocation] = useState<string[]>(['United States']);
 //   const [industry, setIndustry] = useState<string[]>(['IT']);
@@ -42,7 +41,7 @@
 //     event.preventDefault();
 
 //     try {
-//       const response = await searchMuseJobs(location, industry, experience );
+//       const response = await searchMuseJobs(location, industry, experience);
 
 //       if (!response.ok) {
 //         throw new Error('something went wrong!');
@@ -69,10 +68,6 @@
 //       console.error(err);
 //     }
 //   };
-  
-  
-
-  
 
 //   const handleSaveJob = async (jobId: string) => {
 //     const jobToSave: Job = searchJobs.find((job) => job.jobId === Number(jobId))!;
@@ -157,10 +152,8 @@
 //             <Modal.Title>{selectedJob.jobTitle}</Modal.Title>
 //           </Modal.Header>
 //           <Modal.Body>
-//             <div>
-//             <SearchResultCard selectedJob={selectedJob} />
-//             </div>
-//             <p>test: {selectedJob.company.name}</p>
+//             <p>{selectedJob.content}</p>
+//             <p>Company: {selectedJob.company.name}</p>
 //             <p>
 //               Location: {selectedJob.locations.map((loc) => loc.name).join(', ')}
 //             </p>
@@ -177,7 +170,7 @@
 //             </Button>
 //           </Modal.Body>
 //         </Modal>
-//       )} 
+//       )}
 //     </>
 //   );
 // };
