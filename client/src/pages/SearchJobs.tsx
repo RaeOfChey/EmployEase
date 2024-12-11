@@ -3,13 +3,13 @@ import { Container, Col, Button, Row, Modal } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { searchMuseJobs } from '../../../server/src/routes/api/API';
 import type { Job } from '../models/Job';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { SAVE_JOB } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import FilterBar from '../components/FilterBar';
 import { MuseApiInfo } from '../models/MuseApiJobs';
 import SaveJobForm from '../components/SaveJobForm';
-import DOMPurify from 'dompurify';
+//import DOMPurify from 'dompurify';
 
 const SearchJobs = () => {
   const [showJobForm, setShowJobForm] = useState(false);
@@ -25,6 +25,11 @@ const SearchJobs = () => {
     industry: [''],
     experience: [''],
   });
+  const [filterRemote, setFilterRemote] = useState<boolean>(false);
+  const [hideSave, setHideSave] = useState<boolean>(false);
+
+  const { data } = useQuery(GET_ME);
+  const savedJobs = data?.me?.savedJobs || [];
 
   const [saveJob] = useMutation(SAVE_JOB, {
     refetchQueries: [
@@ -33,6 +38,28 @@ const SearchJobs = () => {
       }
     ]
   });
+
+  // filter job results
+  const filterJobResults = (results: MuseApiInfo[], savedJobs: Job[]): Job[] => {
+    const savedJobIds = savedJobs.map((job) => job.jobId);
+
+    return results.filter((job) => {
+      // get two values of jobs we dont want
+      const remoteFilter = filterRemote && job.locations.some(locations => locations.name.includes('Remote'));
+      const savedFilter = hideSave && savedJobIds.includes(job.id);
+
+        // use two values to return the values we do want
+        return !(remoteFilter || savedFilter)}).map((job) => ({
+        jobId: job.id,
+        content: job.contents,
+        jobTitle: job.name,
+        datePublished: job.publication_date,
+        refs: { landingPage: job.refs.landing_page },
+        levels: job.levels.map(level => ({ name: level.name })),
+        locations: job.locations.map(location => ({ name: location.name })),
+        company: { name: job.company.name },
+      }));
+  };
 
   const formatArrayForQuery = (array: string[], prefix: string) => {
     return array
@@ -43,50 +70,26 @@ const SearchJobs = () => {
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
   
-    // Format each array with the appropriate prefix
     const locationParam = formatArrayForQuery(location, 'location=');
     const industryParam = formatArrayForQuery(industry, 'category=');
     const experienceParam = formatArrayForQuery(experience, 'level=');
-
+  
     setCurrentPage(1);
     setRecentParams({ location, industry, experience });
-
+  
     try {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam], 1);
-
-      const queryParams = [locationParam, industryParam, experienceParam]
-        .filter((param) => param) // Ensure no empty sections
-        .join('&'); // Join with "&"
-      console.log('Query Parameters:', queryParams);
-
+  
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-
-
-      // const data = await response.json();
-      // console.log('Full response data:', data);
-
+  
       const { results, page_count } = await response.json();
-
-      const jobData: Job[] = results.map((job: MuseApiInfo) => {
-        return {
-          jobId: job.id,
-          content: job.contents,
-          jobTitle: job.name,
-          datePublished: job.publication_date,
-          refs: { landingPage: job.refs.landing_page },
-          levels: job.levels.map(level => ({ name: level.name })),
-          locations: job.locations.map(location => ({ name: location.name })),
-          company: { name: job.company.name },
-        };
-      });
-
+  
+      const jobData = filterJobResults(results, savedJobs);
       setSearchJobs(jobData);
       setPageCount(page_count);
-
     } catch (err) {
       console.error(err);
     }
@@ -96,40 +99,27 @@ const SearchJobs = () => {
     if (page < 1 || page > pageCount) {
       return;
     }
-
+  
     setCurrentPage(page);
-
+  
     const locationParam = formatArrayForQuery(recentParams.location, 'location=');
     const industryParam = formatArrayForQuery(recentParams.industry, 'category=');
     const experienceParam = formatArrayForQuery(recentParams.experience, 'level=');
-
+  
     try {
       const response = await searchMuseJobs([locationParam], [industryParam], [experienceParam], page);
-
-    if (!response.ok) {
-      throw new Error('something went wrong!');
-    }
-
-    const { results } = await response.json();
-    const jobData: Job[] = results.map((job: MuseApiInfo) => {
-      return {
-        jobId: job.id,
-        content: job.contents,
-        jobTitle: job.name,
-        datePublished: job.publication_date,
-        refs: { landingPage: job.refs.landing_page },
-        levels: job.levels.map(level => ({ name: level.name })),
-        locations: job.locations.map(location => ({ name: location.name })),
-        company: { name: job.company.name },
-      };
-    });
-
-    setSearchJobs(jobData);
-
+  
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
+  
+      const { results } = await response.json();
+      const jobData = filterJobResults(results, savedJobs);
+      setSearchJobs(jobData);
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   // create function to handle saving a job to our database
   const handleSaveJob = async (jobId: number) => {
@@ -164,15 +154,6 @@ const SearchJobs = () => {
     }
   };
 
-  const SearchResultCard = ({ selectedJob }: { selectedJob: Job }) => {
-    
-    const sanitizedContent = DOMPurify.sanitize(selectedJob.content);
-    
-    return (
-      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
-    );
-  };
-
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
   };
@@ -195,6 +176,18 @@ const SearchJobs = () => {
             setExperience={setExperience}
             handleFormSubmit={handleFormSubmit}
           />
+          <Button
+            variant={filterRemote ? 'danger' : 'primary'}
+            onClick={() => setFilterRemote((prev) => !prev)}
+            className="mb-3">
+          {filterRemote ? 'Disable Remote Filter' : 'Enable Remote Filter'}
+          </Button>
+          <Button
+            variant={hideSave ? 'danger' : 'primary'}
+            onClick={() => setHideSave((prev) => !prev)}
+            className="mb-3">
+          {hideSave ? 'Disable Saved Filter' : 'Enable Saved Filter'}
+          </Button>
         </Container>
       </div>
 
@@ -289,13 +282,12 @@ const SearchJobs = () => {
                   >
                     See More
                   </Button>
-
                   <Button
-                    id={`save-job-btn`}
-                    variant="primary"
-                    onClick={() => handleSaveJob(job.jobId)}
-                  >
-                    Save Job
+                  id={`save-job-btn`}
+                  variant="primary"
+                  onClick={() => handleSaveJob(job.jobId)}
+                  disabled={savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId)}>
+                  {savedJobs.some((savedJob: Job) => savedJob.jobId === job.jobId) ? 'Job Already Saved' : 'Save Job'}
                   </Button>
                 </div>
               </div>
@@ -336,7 +328,6 @@ const SearchJobs = () => {
                 .join(', ')}
             </p>
             <h2>Job Description:</h2>
-            <SearchResultCard selectedJob={selectedJob}/>
             <p
               className="see-more-modal-details"
             >Published: {selectedJob.datePublished}</p>
