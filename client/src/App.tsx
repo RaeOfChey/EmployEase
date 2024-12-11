@@ -1,19 +1,3 @@
-// import './App.css';
-// import { Outlet } from 'react-router-dom';
-
-// import Navbar from './components/Navbar';
-
-// function App() {
-//   return (
-//     <>
-//       <Navbar />
-//       <Outlet />
-//     </>
-//   );
-// }
-
-// export default App;
-
 import Footer from './components/Footer';
 
 import {
@@ -25,6 +9,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { Outlet } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
+
 
 const httpLink = createHttpLink({
     uri: '/graphql',

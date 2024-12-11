@@ -9,6 +9,7 @@ interface JobDocument extends Document {
   levels: { name: string }[];
   locations: { name: string }[];
   company: { name: string };
+  applied: boolean
 }
 
 const jobSchema = new Schema<JobDocument>({
@@ -56,6 +57,10 @@ const jobSchema = new Schema<JobDocument>({
       required: true,
     },
   },
+  applied: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 export  {jobSchema, type JobDocument};

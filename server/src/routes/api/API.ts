@@ -1,4 +1,4 @@
-export const  searchMuseJobs = async (locationParam: string[], industryParam: string[], experienceParam: string[]) => {
+export const  searchMuseJobs = async (locationParam: string[], industryParam: string[], experienceParam: string[], page: number) => {
 
   if(locationParam){
     
@@ -11,12 +11,12 @@ export const  searchMuseJobs = async (locationParam: string[], industryParam: st
   if(experienceParam){
   }
 
-  let data = await fetch(`https://www.themuse.com/api/public/jobs?${locationParam}&${industryParam}&${experienceParam}&page=1`);
+  let data = await fetch(`https://www.themuse.com/api/public/jobs?${locationParam}&${industryParam}&${experienceParam}&page=${page}`);
 
   console.log("data")
   console.log(data)
 
-  return fetch(`https://www.themuse.com/api/public/jobs?${locationParam}&${industryParam}&${experienceParam}&page=1`);
+  return fetch(`https://www.themuse.com/api/public/jobs?${locationParam}&${industryParam}&${experienceParam}&page=${page}`);
 };
 
 

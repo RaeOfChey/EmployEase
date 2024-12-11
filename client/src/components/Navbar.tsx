@@ -21,7 +21,7 @@ const AppNavbar = () => {
 
   return (
     <>
-      <Navbar bg='light' variant='light' expand='lg'>
+      <Navbar bg='light' variant='light' collapseOnSelect expand='lg'>
         <Container fluid>
           <Navbar.Brand as={Link} to='/' className='d-flex align-items-center'>
             <img
@@ -46,7 +46,7 @@ const AppNavbar = () => {
                 to='/saved'
                 className={`nav-link custom-hover ${isActive('/saved')}`}
               >
-                Saved Applications
+                Saved Jobs
               </Nav.Link>
               {Auth.loggedIn() ? (
                 <Nav.Link

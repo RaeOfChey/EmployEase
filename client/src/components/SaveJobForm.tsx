@@ -14,10 +14,11 @@ interface Job {
 }
 
 interface SaveJobFormProps {
-    onSaveJob: (job: Job) => void;
+    onSaveJob: (jobId: number) => void;
+    handleModalClose: () => void; // Add this prop
 }
 
-const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob }) => {
+const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob, handleModalClose }) => {
     const [jobDetails, setJobDetails] = useState<Job>({
         title: '',
         company: '',
@@ -40,7 +41,12 @@ const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSaveJob(jobDetails);  // Pass the job details to the parent component
+        const jobId = jobDetails.companyId;
+        if (!jobId) {
+            console.error("Job ID is missing. Cannot save job.");
+            return;
+        }
+        onSaveJob(Number(jobId));
         setJobDetails({
             title: '',
             company: '',
@@ -51,7 +57,8 @@ const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob }) => {
             companyId: '',
             referralLink: '',
             priorityStatus: '',
-        });  // Clear the form after submission
+        });
+        handleModalClose();
     };
 
     return (
@@ -166,7 +173,10 @@ const SaveJobForm: React.FC<SaveJobFormProps> = ({ onSaveJob }) => {
                         <option value="offer">Not Selected</option>
                     </select>
                 </div>
-                <button type="submit" className="btn custom-save-button">Save Job</button>
+                <button type="submit" className="btn custom-save-button"
+                >
+                    Save Job
+                </button>
             </form>
         </div>
     );
