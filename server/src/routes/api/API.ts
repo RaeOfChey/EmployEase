@@ -11,10 +11,9 @@ export const  searchMuseJobs = async (locationParam: string[], industryParam: st
   if(experienceParam){
   }
 
-  let data = await fetch(`https://www.themuse.com/api/public/jobs?${locationParam}&${industryParam}&${experienceParam}&page=${page}`);
+ 
 
-  console.log("data")
-  console.log(data)
+  
 
   return fetch(`https://www.themuse.com/api/public/jobs?${locationParam}&${industryParam}&${experienceParam}&page=${page}`);
 };
