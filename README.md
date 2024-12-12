@@ -1,6 +1,6 @@
 # Employease
 
-https://employease-hubi.onrender.com/
+Visit us at => https://employease-hubi.onrender.com/
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -60,7 +60,7 @@ job search and application tracker
 This application is accessible in two ways:
 
 1. **Locally**: Clone the repository, install the necessary dependencies, and run the application from the command line.
-2. **Deployed Version**: Visit the live version of the application here: [EmployEase](https://.onrender.com/).
+2. **Deployed Version**: Visit the live version of the application here: [EmployEase](https://employease-hubi.onrender.com/).
 
 
 **Here, you can see what the Landing Page looks like when you open the application:**
