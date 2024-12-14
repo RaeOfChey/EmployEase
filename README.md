@@ -1,117 +1,114 @@
-# Employease
+# EmployEase
 
-Visit us at => https://employease-hubi.onrender.com/
+### Status: In Progress
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-
-## Description
-job search and application tracker
+![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)
 
 ## Table of Contents
-* [Installation](#installation)
-* [Usage](#usage)
-* [License](#license)
-* [GitHub](#github)
-* [Questions](#questions)
+1. [Description](#description)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Tools and Technologies](#tools-and-technologies)
+6. [Dependencies and Installs](#dependencies-and-installs)
+7. [Future Enhancements](#future-enhancements)
+8. [License](#license)
+9. [Contributing](#contributing)
+10. [Contact Us](#contact-us)
+11. [Tests](#tests)
+12. [Questions](#questions)
+13. [Credits and Acknowledgements](#credits-and-acknowledgements)
+
+## Description
+Employ-Ease is a job-tracking platform designed to help users organize and manage their job applications. Built with the MERN stack, the application integrates with The Muse API to fetch job data and allows users to save, filter, and track their applications seamlessly. Employ-Ease features a responsive user interface and secure authentication using JSON Web Tokens (JWT).
+
+To view the application, simply navigate to the live website at https://employease-hubi.onrender.com/.
+
+## Features
+- Integration with The Muse API for job data.
+- CRUD functionality for managing job applications:
+   - Users: Create accounts, log in, and securely manage session data.
+   - Jobs: Save, filter, and track job applications.
+- Responsive and clean UI for seamless user experience.
+- Authentication using JSON Web Tokens (JWT).
+- Fully deployed on Render with a MongoDB Atlas database.
 
 ## Installation
-#### If you want the code used to create this application:
-1. **Clone the Repository**:
-   Open your terminal and run the following command to clone the repository to your local machine:
+To use the application, follow these steps:
 
-   ```bash
-   git clone https://github.com/ChristopherP-C/EmployEase
-
-2. **Navigate to the Project Directory** :
-
-    ```bash
-    cd your-repo-name
-3. **Install Dependencies**: 
-
-  "packages": {
-    "": {
-      "name": "employease",
-      "version": "1.0.0",
-      "hasInstallScript": true,
-      "license": "ISC",
-      "dependencies": {
-        "@testing-library/react": "^16.1.0",
-        "apollo-server-express": "^3.13.0",
-        "dompurify": "^3.2.3",
-        "happy-dom": "^15.11.7",
-        "vitest": "^2.1.8"
-      },
-      "devDependencies": {
-        "@testing-library/jest-dom": "^6.6.3",
-        "@types/jest": "^29.5.14",
-        "concurrently": "^8.2.0"
-      }
-    },
-  }
-
-4. **Run the Application**: 
-    You can now run the application by executing the following command:
-    ```bash
-    npm run build
-    npm run develop
+- Step 1: Clone the repository.
+- Step 2: Navigate to the project directory by typing `cd employ-ease`.
+- Step 3: Install the required dependencies by running `npm install` in both the root and client directories..
 
 ## Usage
-This application is accessible in two ways:
+To start the application, run the following command: `npm run develop`.
 
-1. **Locally**: Clone the repository, install the necessary dependencies, and run the application from the command line.
-2. **Deployed Version**: Visit the live version of the application here: [EmployEase](https://employease-hubi.onrender.com/).
+Open the application in your browser to use its features or test API endpoints with a tool like Insomnia.
 
+Features:
+- User Authentication: Sign up, log in, and maintain secure sessions.
+- Job Tracking: Save and track job applications with detailed notes.
+- Search and Filter: Find jobs using integrated API data and custom filters.
 
-**Here, you can see what the Landing Page looks like when you open the application:**
-![Landing Page](image.png)
+## Tools and Technologies
+**Programming Language**:
+- TypeScript
 
-**Here, you can see what the Login Page looks like:**
-![Login Page](image-1.png)
+**Libraries & Frameworks**:
+- React
+- Express.js
+- Apollo Server (GraphQL)
 
-**Here, you can see what the Sign Up page looks like:**
-![Sign Up](image-2.png)
+**Development Environment**:
+  - MongoDB Atlas
 
-**Here, you can see what the Home page looks like:**
-![alt text](image-3.png)
+## Dependencies and Installs
 
-**Here, you can see what the Saved Events page looks like:**
-![No saved jobs](image-4.png)
-![Saved Jobs](image-5.png)
+**NPM Packages**:
+- `@apollo/client` - GraphQL client for the React front-end.
+- `apollo-server-express` - Integrates Apollo Server with Express.js.
+- `bcrypt` - Hashes user passwords for secure authentication.
+- `jsonwebtoken` - Handles user tokenization for secure sessions.
+- `mongoose` - ODM for MongoDB, managing schema and data validation.
 
+## Future Enhancements
+- Allow users to export their tracked jobs into a resume format, leveraging the JSON-based resume standard.
+- Expand data sources by integrating LinkedIn and Indeed APIs for richer job listings.
+- Include salary ranges, company reviews, and other job details not currently available through The Muse API.
+- Provide users with visual insights into their job application trends, success rates, and follow-up reminders.
+- Enable users to share job opportunities or application statuses with peers or mentors for feedback.
+- Develop a mobile-friendly version or a standalone app for on-the-go job tracking.
 
 ## License
-This project is licensed under the MIT license.
+This project is licensed under the MIT License, which allows you to freely use, modify, and distribute this software, provided proper attribution is given.
 
+## Contributing
+This project is part of a coding bootcamp assignment and is not open for contributions. To comply with the course requirements, I must complete this project individually without outside assistance. Therefore, pull requests, issues, or other contributions will not be accepted. Thank you for understanding!
 
-* [License](https://opensource.org/license/mit)
+## Contact Us
+**Avery Jacobson**:
+- https://github.com/
 
-## GitHub
-**The contributors to this project are listed below. Click any name to visit their GitHub page:** <br>
-[Avery Jacobson](https://github.com/TheReal4m4d3u5)
-<br>
+**Cheyenna**:
+- https://github.com/RaeOfChey
+- https://cheyenna-raelynn-portfolio.netlify.app/
+- cheyennaraelynn@gmail.com
 
-[Cheyenna Raelynn Bjorklund](https://github.com/)
-<br>
+**Chris Persaud-Cox**:
+- https://github.com/ChristopherP-C
 
-[Chris Persaud-Cox](https://github.com/ChristopherP-C)
+**Jayce Thoreson**:
+- https://github.com/
 
-<br>
-
-[Jayce Thoreson](https://github.com/)
-
+## Tests
+GitHub Actions were utilized for continuous integration, ensuring the codebase remained functional with every push or pull request. Additional manual testing was conducted to validate the application's features.
 
 ## Questions
 If you have any questions reguarding this application, feel free to reach out to any of the contributors of the project. Contact info can be found on each individuals GitHub page (listed above).
 
-## Credits and Acknnowledgements
+## Credits and Acknowledgements
 - **University of Minnesota** — For providing foundational resources, guidance, and support throughout the development of this project.
-- **[Node.js](https://nodejs.org/en)** — For its powerful runtime environment that allowed for efficient and scalable JavaScript development on the server side.
-- **Vite** — For its fast and flexible build tool, which greatly enhanced our development workflow with rapid bundling and efficient hot reloading.
 - **[TheMuse API](https://www.themuse.com/developers/api)** — For supplying jobs
-
 - **Render** — For a seamless and reliable deployment platform, making it easy to host, manage, and scale the application.
 - **Atlas** — For its scalable and developer-friendly database solution, supporting robust data storage and retrieval for mongo databases.
 - **[Bootstrap](https://getbootstrap.com/)** - Open-source front-end framework
-
-Thanks!
