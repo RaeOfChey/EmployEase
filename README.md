@@ -24,6 +24,10 @@ Employ-Ease is a job-tracking platform designed to help users organize and manag
 
 To view the application, simply navigate to the live website at https://employease-hubi.onrender.com/.
 
+![EmployEase Image 3](https://github.com/user-attachments/assets/b7a150fa-e7c1-47d1-9197-f605c789b77c)
+
+Example of Login/Signup modal
+
 ## Features
 - Integration with The Muse API for job data.
 - CRUD functionality for managing job applications:
@@ -32,6 +36,14 @@ To view the application, simply navigate to the live website at https://employea
 - Responsive and clean UI for seamless user experience.
 - Authentication using JSON Web Tokens (JWT).
 - Fully deployed on Render with a MongoDB Atlas database.
+
+![EmployEase Image 1](https://github.com/user-attachments/assets/780d7216-4af1-44e1-881a-75a8e8613ff8)
+
+Example of job search results
+
+![EmployEase Image 2](https://github.com/user-attachments/assets/dd237ab1-8482-4146-b84b-6d50ad7733ff)
+
+Example of saved job results
 
 ## Installation
 To use the application, follow these steps:
